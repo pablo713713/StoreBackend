@@ -14,6 +14,8 @@ import java.util.List;
 
 @Service
 public class CartItemService {
+    private static final String CART_ITEM_NOT_FOUND = "CartItem not found";
+    private static final String QUANTITY_MUST_BE_POSITIVE = "quantity must be > 0";
 
     private final CartItemRepository cartItemRepo;
     private final ShoppingCartRepository cartRepo;
@@ -37,10 +39,10 @@ public class CartItemService {
 
     @Transactional
     public CartItem addItem(Long cartId, Long productId, int quantity) {
-        if (quantity <= 0) throw new IllegalArgumentException("quantity must be > 0");
+    if (quantity <= 0) throw new IllegalArgumentException(QUANTITY_MUST_BE_POSITIVE);
 
-        ShoppingCart cart = cartRepo.findById(cartId)
-                .orElseGet(() -> cartRepo.save(ShoppingCart.create()));
+    ShoppingCart cart = cartRepo.findById(cartId)
+        .orElseGet(() -> cartRepo.save(ShoppingCart.create()));
 
         Product product = productRepo.findById(productId)
                 .orElseThrow(() -> new IllegalStateException("Product not found: " + productId));
@@ -57,18 +59,18 @@ public class CartItemService {
 
     @Transactional
     public CartItem updateQuantity(Long cartItemId, int quantity) {
-        if (quantity <= 0) throw new IllegalArgumentException("quantity must be > 0");
-        CartItem item = cartItemRepo.findById(cartItemId)
-                .orElseThrow(() -> new IllegalStateException("CartItem not found: " + cartItemId));
+    if (quantity <= 0) throw new IllegalArgumentException(QUANTITY_MUST_BE_POSITIVE);
+    CartItem item = cartItemRepo.findById(cartItemId)
+        .orElseThrow(() -> new IllegalStateException(CART_ITEM_NOT_FOUND + ": " + cartItemId));
         item.setQuantity(quantity);
         return cartItemRepo.save(item);
     }
 
     @Transactional
     public void updateQuantityByProduct(Long cartId, Long productId, int quantity) {
-        if (quantity <= 0) throw new IllegalArgumentException("quantity must be > 0");
-        CartItem item = cartItemRepo.findByCart_IdAndProduct_Id(cartId, productId)
-                .orElseThrow(() -> new IllegalStateException("CartItem not found"));
+    if (quantity <= 0) throw new IllegalArgumentException(QUANTITY_MUST_BE_POSITIVE);
+    CartItem item = cartItemRepo.findByCart_IdAndProduct_Id(cartId, productId)
+        .orElseThrow(() -> new IllegalStateException(CART_ITEM_NOT_FOUND));
         item.setQuantity(quantity);
         cartItemRepo.save(item);
     }
@@ -80,8 +82,8 @@ public class CartItemService {
 
     @Transactional
     public void removeByProduct(Long cartId, Long productId) {
-        CartItem item = cartItemRepo.findByCart_IdAndProduct_Id(cartId, productId)
-                .orElseThrow(() -> new IllegalStateException("CartItem not found"));
+    CartItem item = cartItemRepo.findByCart_IdAndProduct_Id(cartId, productId)
+        .orElseThrow(() -> new IllegalStateException(CART_ITEM_NOT_FOUND));
         cartItemRepo.deleteById(item.getId());
     }
 
@@ -92,8 +94,8 @@ public class CartItemService {
 
     @Transactional
     public CartItem applyCode(Long cartId, Long productId, String code) {
-        CartItem item = cartItemRepo.findByCart_IdAndProduct_Id(cartId, productId)
-                .orElseThrow(() -> new IllegalStateException("CartItem not found"));
+    CartItem item = cartItemRepo.findByCart_IdAndProduct_Id(cartId, productId)
+        .orElseThrow(() -> new IllegalStateException(CART_ITEM_NOT_FOUND));
         var od = discountService.validateForProduct(code, item.getProduct());
         if (od.isEmpty()) throw new IllegalStateException("Código inválido o no vigente");
 
@@ -105,8 +107,8 @@ public class CartItemService {
 
     @Transactional
     public CartItem removeCode(Long cartId, Long productId) {
-        CartItem item = cartItemRepo.findByCart_IdAndProduct_Id(cartId, productId)
-                .orElseThrow(() -> new IllegalStateException("CartItem not found"));
+    CartItem item = cartItemRepo.findByCart_IdAndProduct_Id(cartId, productId)
+        .orElseThrow(() -> new IllegalStateException(CART_ITEM_NOT_FOUND));
         item.setCouponCode(null);
         item.setCouponPct(null);
         return cartItemRepo.save(item);

@@ -3,6 +3,7 @@ package com.example.onlineStore.model;
 import java.math.BigDecimal;
 
 public class CreditCardPayment implements IPaymentMethod {
+    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(CreditCardPayment.class);
 
     private String cardNumber;
     private String cardHolder;
@@ -18,7 +19,7 @@ public class CreditCardPayment implements IPaymentMethod {
 
     @Override
     public boolean pay(BigDecimal amount) {
-        System.out.println("Pagando " + amount + " con tarjeta ****" + cardNumber.substring(cardNumber.length() - 4));
+        logger.info("Pagando {} con tarjeta ****{}", amount, cardNumber.substring(cardNumber.length() - 4));
         return true;
     }
 
