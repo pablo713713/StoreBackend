@@ -17,14 +17,12 @@ class CategoryTest {
         assertEquals(ELECTRONICS_DESCRIPTION, category.getDescription());
         assertNotNull(category.getListProducts());
         assertTrue(category.getListProducts().isEmpty());
-        assertTrue(category.getListProducts().isEmpty());
     }
 
     @Test
     void testSetProducts() {
         Category category = new Category(ELECTRONICS, ELECTRONICS_DESCRIPTION);
         category.setListProducts(new ArrayList<>());
-        assertTrue(category.getListProducts().isEmpty());
         assertTrue(category.getListProducts().isEmpty());
     }
 }
