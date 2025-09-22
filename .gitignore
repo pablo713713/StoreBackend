@@ -2,3 +2,4 @@
 backend/target/
 sonar-project.properties
 .scannerwork/
+.vscode/
