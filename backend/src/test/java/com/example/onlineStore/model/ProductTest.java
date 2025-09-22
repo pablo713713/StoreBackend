@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.math.RoundingMode;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -49,8 +50,8 @@ class ProductTest {
         product.setDiscount(discount);
 
         // Validar descuento aplicado con 2 decimales
-        BigDecimal expectedPrice = new BigDecimal("45.00").setScale(2, BigDecimal.ROUND_HALF_UP);
-        BigDecimal actualPrice = product.getPriceWithDiscount().setScale(2, BigDecimal.ROUND_HALF_UP);
+    BigDecimal expectedPrice = new BigDecimal("45.00").setScale(2, RoundingMode.HALF_UP);
+    BigDecimal actualPrice = product.getPriceWithDiscount().setScale(2, RoundingMode.HALF_UP);
 
         assertEquals(expectedPrice, actualPrice);
     }
