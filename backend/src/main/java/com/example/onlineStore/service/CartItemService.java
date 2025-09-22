@@ -15,6 +15,7 @@ import java.util.List;
 @Service
 public class CartItemService {
     private static final String CART_ITEM_NOT_FOUND = "CartItem not found";
+    private static final String QUANTITY_MUST_BE_POSITIVE = "quantity must be > 0";
 
     private final CartItemRepository cartItemRepo;
     private final ShoppingCartRepository cartRepo;
@@ -38,7 +39,7 @@ public class CartItemService {
 
     @Transactional
     public CartItem addItem(Long cartId, Long productId, int quantity) {
-        if (quantity <= 0) throw new IllegalArgumentException("quantity must be > 0");
+    if (quantity <= 0) throw new IllegalArgumentException(QUANTITY_MUST_BE_POSITIVE);
 
         ShoppingCart cart = cartRepo.findById(cartId)
                 .orElseGet(() -> cartRepo.save(ShoppingCart.create()));
@@ -58,7 +59,7 @@ public class CartItemService {
 
     @Transactional
     public CartItem updateQuantity(Long cartItemId, int quantity) {
-        if (quantity <= 0) throw new IllegalArgumentException("quantity must be > 0");
+    if (quantity <= 0) throw new IllegalArgumentException(QUANTITY_MUST_BE_POSITIVE);
     CartItem item = cartItemRepo.findById(cartItemId)
         .orElseThrow(() -> new IllegalStateException(CART_ITEM_NOT_FOUND + ": " + cartItemId));
         item.setQuantity(quantity);
@@ -67,7 +68,7 @@ public class CartItemService {
 
     @Transactional
     public void updateQuantityByProduct(Long cartId, Long productId, int quantity) {
-        if (quantity <= 0) throw new IllegalArgumentException("quantity must be > 0");
+    if (quantity <= 0) throw new IllegalArgumentException(QUANTITY_MUST_BE_POSITIVE);
     CartItem item = cartItemRepo.findByCart_IdAndProduct_Id(cartId, productId)
         .orElseThrow(() -> new IllegalStateException(CART_ITEM_NOT_FOUND));
         item.setQuantity(quantity);
