@@ -41,8 +41,10 @@ public class CartItemService {
     public CartItem addItem(Long cartId, Long productId, int quantity) {
     if (quantity <= 0) throw new IllegalArgumentException(QUANTITY_MUST_BE_POSITIVE);
 
-        ShoppingCart cart = cartRepo.findById(cartId)
-                .orElseGet(() -> cartRepo.save(ShoppingCart.create()));
+    ShoppingCart cart = cartRepo.findById(cartId)
+        .orElseGet(() -> {
+            return cartRepo.save(ShoppingCart.create());
+        });
 
         Product product = productRepo.findById(productId)
                 .orElseThrow(() -> new IllegalStateException("Product not found: " + productId));
