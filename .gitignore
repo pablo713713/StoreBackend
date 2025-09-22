@@ -1,0 +1,4 @@
+# Ignorar carpeta de compilados Maven
+backend/target/
+sonar-project.properties
+.scannerwork/
