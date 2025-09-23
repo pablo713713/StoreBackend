@@ -26,17 +26,57 @@ public class CartController {
     }
 
     public static class AddItemRequest {
-        public Long cartId;
-        public Long productId;
-        public int quantity;
+        private Long cartId;
+        private Long productId;
+        private int quantity;
+
+        public Long getCartId() {
+            return cartId;
+        }
+
+        public void setCartId(Long cartId) {
+            this.cartId = cartId;
+        }
+
+        public Long getProductId() {
+            return productId;
+        }
+
+        public void setProductId(Long productId) {
+            this.productId = productId;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
     }
 
     public static class UpdateQuantityRequest {
-        public int quantity;
+        private int quantity;
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public void setQuantity(int quantity) {
+            this.quantity = quantity;
+        }
     }
 
     public static class ApplyCodeRequest {
-        public String code;
+        private String code;
+
+        public String getCode() {
+            return code;
+        }
+
+        public void setCode(String code) {
+            this.code = code;
+        }
     }
 
     @GetMapping("/{cartId}")
@@ -56,15 +96,15 @@ public class CartController {
 
     @PostMapping("/items")
     public ResponseEntity<CartItemDTO> addItem(@RequestBody AddItemRequest req) {
-        CartItem created = service.addItem(req.cartId, req.productId, req.quantity);
-        return ResponseEntity.created(URI.create("/api/cart/" + req.cartId))
+        CartItem created = service.addItem(req.getCartId(), req.getProductId(), req.getQuantity());
+        return ResponseEntity.created(URI.create("/api/cart/" + req.getCartId()))
                 .body(toDtoEffective(created));
     }
 
     @PatchMapping("/items/{cartItemId}")
     public ResponseEntity<CartItemDTO> updateQuantity(@PathVariable Long cartItemId,
                                                       @RequestBody UpdateQuantityRequest req) {
-        CartItem updated = service.updateQuantity(cartItemId, req.quantity);
+        CartItem updated = service.updateQuantity(cartItemId, req.getQuantity());
         return ResponseEntity.ok(toDtoEffective(updated));
     }
 
@@ -72,7 +112,7 @@ public class CartController {
     public ResponseEntity<Void> updateQuantityByProduct(@PathVariable Long cartId,
                                                         @PathVariable Long productId,
                                                         @RequestBody UpdateQuantityRequest req) {
-        service.updateQuantityByProduct(cartId, productId, req.quantity);
+        service.updateQuantityByProduct(cartId, productId, req.getQuantity());
         return ResponseEntity.noContent().build();
     }
 
@@ -98,7 +138,7 @@ public class CartController {
     public ResponseEntity<CartItemDTO> applyCode(@PathVariable Long cartId,
                                                  @PathVariable Long productId,
                                                  @RequestBody ApplyCodeRequest body) {
-        CartItem updated = service.applyCode(cartId, productId, body.code);
+        CartItem updated = service.applyCode(cartId, productId, body.getCode());
         return ResponseEntity.ok(toDtoEffective(updated));
     }
 

@@ -5,6 +5,10 @@ import java.math.BigDecimal;
 
 public class Validation {
 
+    private Validation() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
     public static boolean isValidUsername(String username) {
         if (username == null) return false;
         return username.length() > 4;

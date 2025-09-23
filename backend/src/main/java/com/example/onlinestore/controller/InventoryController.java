@@ -33,7 +33,7 @@ public class InventoryController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Inventory inventory) {
+    public ResponseEntity<Object> create(@RequestBody Inventory inventory) {
         try {
             Inventory created = service.create(inventory);
             return ResponseEntity.status(HttpStatus.CREATED).body(created);
@@ -43,7 +43,7 @@ public class InventoryController {
     }
 
     @PutMapping("/{id}/categories")
-    public ResponseEntity<?> replaceCategories(
+    public ResponseEntity<Object> replaceCategories(
             @PathVariable Long id,
             @RequestBody List<Long> categoryIds) {
         try {
@@ -54,7 +54,7 @@ public class InventoryController {
     }
 
     @PostMapping("/{id}/categories/{categoryId}")
-    public ResponseEntity<?> addCategory(
+    public ResponseEntity<Object> addCategory(
             @PathVariable Long id,
             @PathVariable Long categoryId) {
         try {
@@ -65,7 +65,7 @@ public class InventoryController {
     }
 
     @DeleteMapping("/{id}/categories/{categoryId}")
-    public ResponseEntity<?> removeCategory(
+    public ResponseEntity<Object> removeCategory(
             @PathVariable Long id,
             @PathVariable Long categoryId) {
         try {
@@ -76,12 +76,12 @@ public class InventoryController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
         try {
             service.delete(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         } catch (IllegalStateException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }

@@ -24,16 +24,16 @@ public class AdminController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Admin> getById(@PathVariable Long id) {
+    public ResponseEntity<Object> getById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(service.getById(id));
         } catch (IllegalStateException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Admin admin) {
+    public ResponseEntity<Object> create(@RequestBody Admin admin) {
         try {
             Admin created = service.create(admin);
             return ResponseEntity.status(HttpStatus.CREATED).body(created);
@@ -43,7 +43,7 @@ public class AdminController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Admin details) {
+    public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Admin details) {
         try {
             return ResponseEntity.ok(service.update(id, details));
         } catch (IllegalStateException e) {
@@ -54,7 +54,7 @@ public class AdminController {
     }
 
     @PutMapping("/{id}/inventory/{inventoryId}")
-    public ResponseEntity<?> setInventory(@PathVariable Long id, @PathVariable Long inventoryId) {
+    public ResponseEntity<Object> setInventory(@PathVariable Long id, @PathVariable Long inventoryId) {
         try {
             return ResponseEntity.ok(service.setInventory(id, inventoryId));
         } catch (IllegalStateException e) {
@@ -65,21 +65,21 @@ public class AdminController {
     }
 
     @DeleteMapping("/{id}/inventory")
-    public ResponseEntity<?> removeInventory(@PathVariable Long id) {
+    public ResponseEntity<Object> removeInventory(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(service.removeInventory(id));
         } catch (IllegalStateException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
         try {
             service.delete(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         } catch (IllegalStateException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
@@ -87,7 +87,7 @@ public class AdminController {
     // Helpers privados
     // ---------------------
 
-    private ResponseEntity<?> buildConflictOrBadRequest(IllegalStateException e, String defaultMsg) {
+    private ResponseEntity<Object> buildConflictOrBadRequest(IllegalStateException e, String defaultMsg) {
         String msg = messageOrDefault(e, defaultMsg);
         HttpStatus status = isConflictMessage(msg) ? HttpStatus.CONFLICT : HttpStatus.BAD_REQUEST;
         return ResponseEntity.status(status).body(msg);
@@ -97,7 +97,6 @@ public class AdminController {
         if (msg == null) return false;
         String lower = msg.toLowerCase();
         return lower.contains("already exists") || lower.contains("already assigned");
-        // Añade aquí otros indicadores de conflicto si tu servicio los usa.
     }
 
     private String messageOrDefault(IllegalStateException e, String fallback) {
