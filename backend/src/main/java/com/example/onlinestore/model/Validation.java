@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 
 public class Validation {
 
-    // Constructor privado para evitar instanciación
     private Validation() {
         throw new UnsupportedOperationException("Utility class");
     }
