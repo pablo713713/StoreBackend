@@ -11,6 +11,8 @@ import java.util.List;
 @Service
 public class AdminService {
 
+    private static final String ERR_INVENTORY_NOT_FOUND = "Inventory not found with id: ";
+
     private final AdminRepository adminRepository;
     private final InventoryRepository inventoryRepository;
 
@@ -37,7 +39,7 @@ public class AdminService {
         if (admin.getAdminInventory() != null && admin.getAdminInventory().getId() != null) {
             Long invId = admin.getAdminInventory().getId();
             Inventory inv = inventoryRepository.findById(invId)
-                    .orElseThrow(() -> new IllegalStateException("Inventory not found with id: " + invId));
+                    .orElseThrow(() -> new IllegalStateException(ERR_INVENTORY_NOT_FOUND + invId));
 
             adminRepository.findByAdminInventory_Id(invId)
                     .ifPresent(a -> {
@@ -72,7 +74,7 @@ public class AdminService {
 
             if (admin.getAdminInventory() == null || !admin.getAdminInventory().getId().equals(newInvId)) {
                 Inventory inv = inventoryRepository.findById(newInvId)
-                        .orElseThrow(() -> new IllegalStateException("Inventory not found with id: " + newInvId));
+                        .orElseThrow(() -> new IllegalStateException(ERR_INVENTORY_NOT_FOUND + newInvId));
 
                 adminRepository.findByAdminInventory_Id(newInvId)
                         .ifPresent(a -> {
@@ -98,7 +100,7 @@ public class AdminService {
     public Admin setInventory(Long adminId, Long inventoryId) {
         Admin admin = getById(adminId);
         Inventory inv = inventoryRepository.findById(inventoryId)
-                .orElseThrow(() -> new IllegalStateException("Inventory not found with id: " + inventoryId));
+                .orElseThrow(() -> new IllegalStateException(ERR_INVENTORY_NOT_FOUND + inventoryId));
 
         adminRepository.findByAdminInventory_Id(inventoryId)
                 .ifPresent(a -> {

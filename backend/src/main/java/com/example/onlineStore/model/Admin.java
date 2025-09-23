@@ -24,6 +24,11 @@ public class Admin extends User {
         this.adminInventory = adminInventory;
     }
 
+    /**
+     * @deprecated Este constructor se mantiene solo para compatibilidad
+     *             y no debe usarse en nuevo código.
+     *             Usa {@link #Admin(String, String, String, String, Inventory)} en su lugar.
+     */
     @Deprecated
     public Admin(String name, String firstLastName, String secondLastName,
                  int ignored, String accessCode, Inventory adminInventory) {

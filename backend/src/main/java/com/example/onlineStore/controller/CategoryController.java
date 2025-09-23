@@ -33,7 +33,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody Category category) {
+    public ResponseEntity<Object> create(@RequestBody Category category) {
         try {
             Category created = service.create(category);
             return ResponseEntity.status(HttpStatus.CREATED).body(created);
@@ -43,7 +43,7 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody Category details) {
+    public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody Category details) {
         try {
             return ResponseEntity.ok(service.update(id, details));
         } catch (IllegalStateException e) {
@@ -51,21 +51,21 @@ public class CategoryController {
             if (msg != null && msg.contains("exists")) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(msg);
             }
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable Long id) {
+    public ResponseEntity<Object> delete(@PathVariable Long id) {
         try {
             service.delete(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         } catch (IllegalStateException e) {
             String msg = e.getMessage();
             if (msg != null && msg.contains("assigned products")) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body(msg);
             }
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }

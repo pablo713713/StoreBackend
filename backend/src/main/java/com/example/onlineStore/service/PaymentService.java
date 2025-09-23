@@ -13,6 +13,8 @@ import java.math.BigDecimal;
 @Transactional
 public class PaymentService {
 
+    private static final String ERR_CLIENTE_NO_ENCONTRADO = "Cliente no encontrado";
+
     private final PaymentRepository paymentRepository;
     private final ClientRepository clientRepository;
 
@@ -24,7 +26,7 @@ public class PaymentService {
 
     public Payment createPaymentForClient(Long clientId, String type, BigDecimal amount, String... params) {
         Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException(ERR_CLIENTE_NO_ENCONTRADO));
 
         Payment payment;
         switch (type.toLowerCase()) {
@@ -55,7 +57,7 @@ public class PaymentService {
 
     public boolean makePayment(Long clientId) {
         Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException(ERR_CLIENTE_NO_ENCONTRADO));
         Payment payment = client.getPaymentMethod();
         if (payment == null) {
             throw new IllegalStateException("No se ha asignado método de pago");
@@ -65,7 +67,7 @@ public class PaymentService {
 
     public String getPaymentDetails(Long clientId) {
         Client client = clientRepository.findById(clientId)
-                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado"));
+                .orElseThrow(() -> new IllegalArgumentException(ERR_CLIENTE_NO_ENCONTRADO));
         Payment payment = client.getPaymentMethod();
         if (payment == null) {
             return "No se ha asignado método de pago";
