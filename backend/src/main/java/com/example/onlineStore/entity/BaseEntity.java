@@ -1,4 +1,4 @@
-package com.example.onlineStore.Entity;
+package com.example.onlineStore.entity;
 
 import jakarta.persistence.*;
 import java.time.Instant;
