@@ -38,39 +38,39 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Maven.onlineStore [clean,verify,sonar:sonar...].executor": "Run",
-    "Maven.onlineStore [clean,verify,sonar:sonar].executor": "Run",
-    "Maven.onlineStore [clean,verify].executor": "Run",
-    "Maven.onlineStore [mvn,spring-boot:run].executor": "Run",
-    "Maven.onlineStore [spring-boot:run].executor": "Run",
-    "Maven.onlineStore [çspring-boot:run].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "Spring Boot.OnlineStoreApplication.executor": "Run",
-    "git-widget-placeholder": "DefineConstantToDuplicateStrings",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/Universidad/8vo_semestre_II2025/GEST_CALIDAD/OnlineStoreBackend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Project",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.0",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Maven.onlineStore [clean,verify,sonar:sonar...].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.onlineStore [clean,verify,sonar:sonar].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.onlineStore [clean,verify].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.onlineStore [mvn,spring-boot:run].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.onlineStore [spring-boot:run].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.onlineStore [çspring-boot:run].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;Spring Boot.OnlineStoreApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;DefineConstantToDuplicateStrings&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Universidad/8vo_semestre_II2025/GEST_CALIDAD/OnlineStoreBackend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunAnythingCache">
     <option name="myCommands">
       <command value="mvn clean verify sonar:sonar" />
@@ -85,7 +85,7 @@
   <component name="RunManager">
     <configuration name="OnlineStoreApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="onlineStore" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.onlineStore.OnlineStoreApplication" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.onlinestore.OnlineStoreApplication" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -107,7 +107,7 @@
       <option name="presentableId" value="Default" />
       <updated>1758085800873</updated>
       <workItem from="1758085811049" duration="1380000" />
-      <workItem from="1758597183081" duration="5872000" />
+      <workItem from="1758597183081" duration="6448000" />
     </task>
     <servers />
   </component>
