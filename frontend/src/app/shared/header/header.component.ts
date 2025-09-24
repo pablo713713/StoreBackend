@@ -16,8 +16,8 @@ export class HeaderComponent implements OnInit {
   count$!: Observable<number>;
 
   constructor(
-    private cart: CartService,
-    private router: Router   
+    private readonly cart: CartService,
+    private readonly router: Router   
   ) {}
 
   ngOnInit(): void {
