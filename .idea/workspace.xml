@@ -5,20 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b13d44a8-3992-4705-929c-80e9cdf82904" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/OnlineStoreBackend.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/onlinestore/controller/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/onlinestore/controller/CartController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/onlinestore/model/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/onlinestore/model/Admin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/onlinestore/model/CreditCardPayment.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/onlinestore/model/CreditCardPayment.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -34,6 +38,9 @@
   &quot;associatedIndex&quot;: 7
 }</component>
   <component name="ProjectId" id="32oTCuwFTwynpL78m034j4aytex" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -41,12 +48,17 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;JUnit.AdminControllerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.CategoryTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ClientTest.executor&quot;: &quot;Run&quot;,
     &quot;Maven.onlineStore [clean,verify,sonar:sonar...].executor&quot;: &quot;Run&quot;,
     &quot;Maven.onlineStore [clean,verify,sonar:sonar].executor&quot;: &quot;Run&quot;,
     &quot;Maven.onlineStore [clean,verify].executor&quot;: &quot;Run&quot;,
     &quot;Maven.onlineStore [mvn,spring-boot:run].executor&quot;: &quot;Run&quot;,
     &quot;Maven.onlineStore [spring-boot:run].executor&quot;: &quot;Run&quot;,
     &quot;Maven.onlineStore [çspring-boot:run].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.onlinestore [clean,verify,sonar:sonar...].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.onlinestore [spring-boot:run].executor&quot;: &quot;Run&quot;,
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
     &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
     &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
@@ -57,7 +69,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;Spring Boot.OnlineStoreApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;DefineConstantToDuplicateStrings&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;addCoverage&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;D:/Universidad/8vo_semestre_II2025/GEST_CALIDAD/OnlineStoreBackend&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -65,7 +77,7 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
@@ -82,7 +94,52 @@
       <command value="mvn clean verify sonar:sonar    -Dsonar.projectKey=StoreBackend    -Dsonar.projectName='StoreBackend'    -Dsonar.host.url=http://localhost:9000    -Dsonar.token=sqp_df6ed2f2f5f9de769cb2596675f8ba3253eb6399" />
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.AdminControllerTest">
+    <configuration name="AdminControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="onlineStore" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.onlinestore.controller.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.onlinestore.controller" />
+      <option name="MAIN_CLASS_NAME" value="com.example.onlinestore.controller.AdminControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="CategoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="onlineStore" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.onlinestore.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.onlinestore.model" />
+      <option name="MAIN_CLASS_NAME" value="com.example.onlinestore.model.CategoryTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ClientTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="onlineStore" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.onlinestore.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.onlinestore.model" />
+      <option name="MAIN_CLASS_NAME" value="com.example.onlinestore.model.ClientTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="OnlineStoreApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="onlineStore" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.onlinestore.OnlineStoreApplication" />
@@ -90,6 +147,13 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.AdminControllerTest" />
+        <item itemvalue="JUnit.ClientTest" />
+        <item itemvalue="JUnit.CategoryTest" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -108,10 +172,23 @@
       <updated>1758085800873</updated>
       <workItem from="1758085811049" duration="1380000" />
       <workItem from="1758597183081" duration="6448000" />
+      <workItem from="1758641666309" duration="3898000" />
+      <workItem from="1758682734491" duration="1650000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/backend/src/test/java/com/example/onlinestore/model/CategoryTest.java</url>
+          <line>7</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

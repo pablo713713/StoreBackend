@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -88,9 +89,10 @@ public class CartController {
 
     @PostMapping("/ensure")
     public ResponseEntity<Long> ensureCart(@RequestParam(required = false) Long cartId) {
-        ShoppingCart sc = (cartId != null && cartRepo.findById(cartId).isPresent())
-                ? cartRepo.findById(cartId).get()
-                : cartRepo.save(ShoppingCart.create());
+        ShoppingCart sc = Optional.ofNullable(cartId)
+                .flatMap(cartRepo::findById)
+                .orElseGet(() -> cartRepo.save(ShoppingCart.create()));
+
         return ResponseEntity.ok(sc.getId());
     }
 
