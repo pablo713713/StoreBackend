@@ -1,0 +1,88 @@
+.header{
+  position:sticky; 
+  top:0; 
+  z-index:50;
+  background:#fff; 
+  border-bottom:1px solid var(--border);
+  backdrop-filter:saturate(180%) blur(6px);
+}
+.header .row{
+  justify-content:space-between; 
+  height:70px
+}
+.brand{
+  display:flex; 
+  align-items:center; 
+  gap:10px; 
+  font-weight:700; 
+  letter-spacing:.3px
+}
+.brand img{height:32px}
+.nav{
+  display:flex; 
+  gap:22px; 
+  align-items:center; 
+  font-weight:500
+}
+.nav a{
+  color:var(--text); 
+  text-decoration:none
+}
+.nav a:hover{opacity:.7}
+.cart-btn{
+  display:inline-flex; 
+  align-items:center; 
+  gap:10px;
+  padding:10px 14px; 
+  border:1px solid var(--border); 
+  border-radius:999px;
+  background:#fff; 
+  cursor:pointer;
+}
+.cart-count{
+  display:inline-grid; 
+  place-items:center; 
+  min-width:22px; 
+  height:22px; 
+  padding:0 6px;
+  background:#111;
+  color:#fff;
+  border-radius:999px; 
+  font-size:12px
+}
+.hero{
+  padding:56px 0 24px; 
+  border-bottom:1px solid var(--border)
+}
+h1{
+  font-size:64px; 
+  margin:0 0 6px
+}
+.cart-btn i { font-size: 18px; }
+.cart-btn { gap: 10px; }.actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.login-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.login-btn i {
+  font-size: 18px;
+}
+
+.login-btn:hover {
+  opacity: .7;
+}
+
+
+@media (max-width:900px){ h1{font-size:44px} }

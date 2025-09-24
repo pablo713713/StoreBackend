@@ -1,0 +1,29 @@
+<!-- product-list.component.html -->
+<section class="hero">
+  <div class="container">
+    <h1>Biba</h1>
+    <div class="subtitle">Bolsas llenas de color</div>
+  </div>
+</section>
+
+<main class="container">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin:22px 0 6px">
+    <div class="btn secondary">Más vendido</div>
+  </div>
+
+  <section class="grid" aria-label="Listado de productos">
+    <article class="card" *ngFor="let p of (products$ | async)">
+      <a [routerLink]="['/product', p.id]">
+        <img [src]="p.imageUrl" [alt]="p.nameProduct"/>
+      </a>
+      <div class="p">
+        <h3 style="margin:0 0 6px">{{ p.nameProduct }}</h3>
+        <div class="price">{{ p.price | number:'1.2-2' }} Bs</div>
+        <div style="margin-top:12px;display:flex;gap:10px">
+          <button class="btn" type="button" (click)="add(p)">Añadir al carrito</button>
+          <a class="btn secondary" [routerLink]="['/product', p.id]">Ver</a>
+        </div>
+      </div>
+    </article>
+  </section>
+</main>

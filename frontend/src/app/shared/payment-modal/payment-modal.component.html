@@ -1,0 +1,59 @@
+<div class="modal">
+  <h2>Método de pago</h2>
+  <div class="muted">Total a pagar: {{ total | number:'1.2-2' }} Bs</div>
+
+  <div class="tabbar" style="display:flex;gap:10px;margin:16px 0;">
+    <button type="button"
+            class="btn"
+            [class.dark]="selectedMethod==='paypal'"
+            (click)="selectedMethod='paypal'">PayPal</button>
+
+    <button type="button"
+            class="btn"
+            [class.dark]="selectedMethod==='creditcard'"
+            (click)="selectedMethod='creditcard'">Tarjeta de Crédito</button>
+  </div>
+
+  <!-- PayPal -->
+  <div *ngIf="selectedMethod==='paypal'" style="display:flex;flex-direction:column;gap:10px">
+    <input type="email" placeholder="Correo PayPal" [(ngModel)]="email" />
+    <input type="password" placeholder="Contraseña" [(ngModel)]="password" />
+    <button class="btn dark"
+            [disabled]="!isValidPaypal() || loading"
+            (click)="payNow()">
+      {{ loading ? 'Procesando...' : 'Pagar ahora con PayPal' }}
+    </button>
+  </div>
+
+  <!-- CreditCard -->
+  <div *ngIf="selectedMethod==='creditcard'" style="display:flex;flex-direction:column;gap:10px">
+    <input placeholder="Número de tarjeta"
+           [(ngModel)]="cardNumber"
+           (input)="onCardNumberInput()"
+           inputmode="numeric" />
+
+    <input placeholder="Titular"
+           [(ngModel)]="cardHolder" />
+
+    <input placeholder="Fecha expiración (MM/AA)"
+           [(ngModel)]="expirationDate"
+           (input)="onExpirationInput()"
+           inputmode="numeric" />
+
+    <input placeholder="CVV"
+           [(ngModel)]="cvv"
+           maxlength="4"
+           (input)="onCvvInput()"
+           inputmode="numeric" />
+
+    <button class="btn dark"
+            [disabled]="!isValidCard() || loading"
+            (click)="payNow()">
+      {{ loading ? 'Procesando...' : 'Pagar ahora con Tarjeta' }}
+    </button>
+  </div>
+
+  <div style="margin-top:16px">
+    <button class="btn secondary" type="button" (click)="close.emit()">Volver</button>
+  </div>
+</div>

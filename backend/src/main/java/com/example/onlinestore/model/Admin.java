@@ -23,7 +23,6 @@ public class Admin extends User {
         this.accessCode = accessCode;
         this.adminInventory = adminInventory;
     }
-
     /**
      * @deprecated Este constructor está obsoleto desde la versión 1.0
      *             y será eliminado en una futura versión.
@@ -34,6 +33,7 @@ public class Admin extends User {
                  int ignored, String accessCode, Inventory adminInventory) {
         this(name, firstLastName, secondLastName, accessCode, adminInventory);
     }
+
 
     public String getAccessCode() {
         return accessCode;

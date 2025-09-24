@@ -1,0 +1,27 @@
+<div class="header" role="banner">
+  <div class="container row">
+    <div [routerLink]="['/']" class="brand" aria-label="Inicio">
+      <img src="assets/img/logo.svg" alt="Biba">
+      <span>Bolsas llenas de color</span>
+    </div>
+
+    <nav class="nav" aria-label="Principal">
+      <a [routerLink]="['/']">Tienda</a>
+      <a [routerLink]="['/about']">Acerca de</a>
+      <a [routerLink]="['/faq']">FAQ</a>
+      <a [routerLink]="['/contact']">Contacto</a>
+    </nav>
+
+  
+    <div class="actions">
+      <button class="login-btn" (click)="onLogin()" aria-label="Iniciar sesión">
+        <i class="bi bi-person"></i>
+        <span>Iniciar sesión</span>
+      </button>
+      <button class="cart-btn" (click)="open()" aria-label="Abrir carrito">
+        <i class="bi bi-bag"></i>
+        <span class="cart-count">{{ (count$ | async) ?? 0 }}</span>
+      </button>
+    </div>
+  </div>
+</div>

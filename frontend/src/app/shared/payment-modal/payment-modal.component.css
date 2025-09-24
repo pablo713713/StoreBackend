@@ -1,0 +1,119 @@
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  text-align: center;
+}
+
+h2 {
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #333;
+}
+
+.method-selector {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.method-selector button {
+  flex: 1;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.method-selector button.active {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.btn-paypal {
+  background: #0070ba; /* Azul PayPal */
+  color: #fff;
+  border: 1px solid #0070ba;
+}
+
+.btn-paypal:hover {
+  background: #005c9c;
+}
+
+.btn-creditcard {
+  background: #28a745; /* Verde tarjeta */
+  color: #fff;
+  border: 1px solid #28a745;
+}
+
+.btn-creditcard:hover {
+  background: #1e7e34;
+}
+
+.payment-option {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.payment-option input {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+.payment-option input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button {
+  display: inline-block;
+  width: 100%;
+  padding: 10px 15px;
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.back-btn {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.back-btn button {
+  width: 40%;
+  background: #6c757d;
+  color: #fff;
+}
+
+.back-btn button:hover {
+  background: #545b62;
+}
