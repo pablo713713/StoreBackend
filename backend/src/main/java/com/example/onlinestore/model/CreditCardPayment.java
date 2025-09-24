@@ -19,13 +19,19 @@ public class CreditCardPayment implements IPaymentMethod {
 
     @Override
     public boolean pay(BigDecimal amount) {
-        logger.info("Pagando {} con tarjeta ****{}", amount, cardNumber.substring(cardNumber.length() - 4));
+        if (logger.isInfoEnabled()) {
+            logger.info("Pagando {} con tarjeta ****{}", amount, cardNumber.substring(cardNumber.length() - 4));
+        }
         return true;
     }
 
     @Override
     public String getPaymentDetails() {
-        return "CreditCard ****" + cardNumber.substring(cardNumber.length() - 4);
+        // Aquí no usamos logger, pero sí substring, así que conviene validar longitud
+        if (cardNumber != null && cardNumber.length() >= 4) {
+            return "CreditCard ****" + cardNumber.substring(cardNumber.length() - 4);
+        }
+        return "CreditCard (número inválido)";
     }
 
     public String getCardHolder() {
