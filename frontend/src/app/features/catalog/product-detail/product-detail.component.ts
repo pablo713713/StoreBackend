@@ -39,7 +39,7 @@ export class ProductDetailComponent implements OnInit {
 
   add(p: Product){
     this.cart.add({
-      productId: p.id!,
+      productId: p.id,
       nameProduct: p.nameProduct,
       price: p.price,
       imageUrl: p.imageUrl,
@@ -49,7 +49,7 @@ export class ProductDetailComponent implements OnInit {
 
   addThenApply(p: Product){
     this.cart.addThenApply({
-      productId: p.id!,
+      productId: p.id,
       nameProduct: p.nameProduct,
       price: p.price,
       imageUrl: p.imageUrl,
@@ -61,7 +61,7 @@ export class ProductDetailComponent implements OnInit {
   applyCode(p: Product){
     const code = this.promoCode?.trim();
     if (code) {
-      this.cart.applyCode(p.id!, code);
+      this.cart.applyCode(p.id, code);
       this.openDrawer();
     }
   }
