@@ -13,6 +13,6 @@ import { FooterComponent } from './shared/footer/footer.component';
     FooterComponent
   ],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: []
 })
 export class AppComponent {}

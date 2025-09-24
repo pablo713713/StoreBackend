@@ -257,7 +257,6 @@
     opacity: 1;
     transform: translateY(0);
   }
-  scrollbar-color: #ddd transparent;
 }
 
 .drawer-body::-webkit-scrollbar {

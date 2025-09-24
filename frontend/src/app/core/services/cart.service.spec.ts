@@ -7,8 +7,8 @@ import { take } from 'rxjs/operators';
 describe('CartService', () => {
   let service: CartService;
   const mockItem: CartItem = {
-    productId: '1',
-    title: 'Test Product',
+    productId: 1,
+    nameProduct: 'Test Product',
     price: 100,
     imageUrl: 'test.png',
     qty: 1
@@ -31,7 +31,7 @@ describe('CartService', () => {
     service.add(mockItem);
     service.items$.subscribe(items => {
       expect(items.length).toBe(1);
-      expect(items[0].title).toBe('Test Product');
+      expect(items[0].nameProduct).toBe('Test Product');
       done();
     });
   });
@@ -96,7 +96,7 @@ describe('CartService', () => {
   });
 
   it('should handle product with zero price in total$', async () => {
-    service.add({ ...mockItem, productId: 1, price: 0, qty: 3 });
+  service.add({ ...mockItem, productId: 1, price: 0, qty: 3 });
     const total = await firstValueFrom(service.total$.pipe(take(1)));
     expect(total).toBe(0);
   });
