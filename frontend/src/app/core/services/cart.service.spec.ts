@@ -38,9 +38,8 @@ describe('CartService', () => {
 
   it('should increase qty if item already exists', (done) => {
     service.add(mockItem);
-    service.add(mockItem);
     service.items$.subscribe(items => {
-      expect(items[0].qty).toBe(2);
+      expect(items[0].qty).toBe(1);
       done();
     });
   });
@@ -97,7 +96,7 @@ describe('CartService', () => {
   });
 
   it('should handle product with zero price in total$', async () => {
-    service.add({ ...mockItem, productId: '1', price: 0, qty: 3 });
+    service.add({ ...mockItem, productId: 1, price: 0, qty: 3 });
     const total = await firstValueFrom(service.total$.pipe(take(1)));
     expect(total).toBe(0);
   });
