@@ -22,9 +22,9 @@ export class ProductDetailComponent implements OnInit {
   product$!: Observable<Product>;
 
   constructor(
-    private route: ActivatedRoute,
-    private api: ProductService,
-    private cart: CartService
+    private readonly route: ActivatedRoute,
+    private readonly api: ProductService,
+    private readonly cart: CartService
   ) {}
 
   ngOnInit(): void {
