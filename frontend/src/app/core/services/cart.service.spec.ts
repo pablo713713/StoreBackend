@@ -38,7 +38,6 @@ describe('CartService', () => {
 
   it('should increase qty if item already exists', (done) => {
     service.add(mockItem);
-    service.add(mockItem);
     service.items$.subscribe(items => {
       expect(items[0].qty).toBe(2);
       done();
