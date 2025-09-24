@@ -8,7 +8,7 @@ const CART_ID = 1;
 
 @Injectable({ providedIn: 'root' })
 export class CartService {
-  private _rawItems$ = new BehaviorSubject<CartItem[]>([]);
+  private readonly _rawItems$ = new BehaviorSubject<CartItem[]>([]);
 
   readonly items$: Observable<CartItem[]>;
   readonly count$: Observable<number>;
