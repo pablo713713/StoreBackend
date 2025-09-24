@@ -28,7 +28,7 @@ export class PaymentModalComponent {
   expirationDate = ''; // MM/AA
   cvv = '';
 
-  constructor(private cart: CartService) {}
+  constructor(private readonly cart: CartService) {}
 
   // ---------- Validaciones ----------
   isValidPaypal(): boolean {
