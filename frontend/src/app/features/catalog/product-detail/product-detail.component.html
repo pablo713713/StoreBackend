@@ -1,0 +1,43 @@
+<ng-container *ngIf="product$ | async as p">
+  <main class="container product">
+    <figure class="gallery">
+      <img [src]="p.imageUrl" [alt]="p.nameProduct" />
+    </figure>
+
+    <aside class="panel">
+      <div class="info">
+        <img [src]="p.imageUrl" [alt]="p.nameProduct" class="thumb">
+        <div>
+          <h2>{{ p.nameProduct }}</h2>
+          <div class="muted">Color: {{ p.color || '—' }}</div>
+        </div>
+      </div>
+
+      <div class="price">{{ p.price | number:'1.2-2' }} Bs</div>
+
+      <div class="qty">
+        <button type="button" (click)="dec()">-</button>
+        <input type="number" min="1" [(ngModel)]="qty" />
+        <button type="button" (click)="inc()">+</button>
+      </div>
+
+      <div class="input">
+        <label>Ingresar código de promoción</label>
+        <!-- 👇 enlazamos el código a la propiedad promoCode -->
+        <input placeholder="P. ej., OFERTA50" [(ngModel)]="promoCode"/>
+        <button class="btn secondary" type="button" style="margin-top:8px"
+                (click)="applyCode(p)">Aplicar</button>
+      </div>
+
+      <table class="table">
+        <tr>
+          <td>Total estimado</td>
+          <td style="text-align:right">{{ (qty * p.price) | number:'1.2-2' }} Bs</td>
+        </tr>
+      </table>
+
+      <button class="btn" type="button" (click)="addThenApply(p)">Agregar a carrito</button>
+      <button class="btn secondary" type="button" (click)="openDrawer()">Ver carrito</button>
+    </aside>
+  </main>
+</ng-container>

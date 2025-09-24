@@ -1,0 +1,60 @@
+<aside class="cart-drawer" [class.open]="openDrawer" role="dialog" aria-label="Carrito">
+  <div class="drawer-topbar">
+    <strong>Carrito ({{ (items$ | async)?.length || 0 }} ítem)</strong>
+    <button class="icon-btn light" (click)="close()" aria-label="Cerrar">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+
+  <div class="drawer-body">
+    <div class="empty" *ngIf="(items$ | async)?.length === 0">Tu carrito está vacío.</div>
+
+    <div *ngFor="let p of (items$ | async)" class="cart-card">
+      <div class="cart-card-left">
+        <img [src]="p.imageUrl" [alt]="p.nameProduct" class="thumb">
+        <div>
+          <div class="title">{{ p.nameProduct }}</div>
+          <div class="price">{{ p.price | number:'1.2-2' }} Bs</div>
+
+          <div class="coupon" style="margin-top:6px; display:flex; gap:6px; align-items:center;">
+            <input class="small" placeholder="Código" [(ngModel)]="codes[p.productId]" />
+            <button class="btn tiny" type="button" (click)="apply(p.productId)">Aplicar</button>
+            <button class="btn tiny secondary" type="button" (click)="removeCode(p.productId)">Quitar</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cart-card-actions">
+        <div class="qtybox">
+          <button (click)="update(p.productId, p.qty-1)" aria-label="Disminuir">
+            <i class="bi bi-dash"></i>
+          </button>
+          <span>{{ p.qty }}</span>
+          <button (click)="update(p.productId, p.qty+1)" aria-label="Aumentar">
+            <i class="bi bi-plus"></i>
+          </button>
+        </div>
+        <button class="icon-btn danger" (click)="remove(p.productId)" aria-label="Eliminar">
+          <i class="bi bi-trash"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="drawer-footer">
+    <div class="total">
+      <span>Total estimado</span>
+      <span>{{ (total$ | async) | number:'1.2-2' }} Bs</span>
+    </div>
+
+    <button class="btn dark" (click)="openPayment()">Página de pago</button>
+    <app-payment-modal
+      *ngIf="showPayment"
+      [total]="(total$ | async)!"
+      [clientId]="1"
+      (close)="closePayment()">
+    </app-payment-modal>
+
+    <button class="btn secondary" (click)="close()">Ver carrito</button>
+  </div>
+</aside>

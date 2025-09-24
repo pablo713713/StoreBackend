@@ -1,0 +1,61 @@
+<div class="login-container">
+  <mat-card class="login-card mat-elevation-z8">
+    <div class="login-header">
+      <h1>Bienvenido</h1>
+      <p>Ingresa tus credenciales para acceder</p>
+    </div>
+
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Correo Electrónico</mat-label>
+        <input
+          matInput
+          type="email"
+          [(ngModel)]="email"
+          name="email"
+          required
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Contraseña</mat-label>
+        <input
+          matInput
+          [type]="hidePassword ? 'password' : 'text'"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+        <button type="button" mat-icon-button matSuffix (click)="hidePassword = !hidePassword">
+        <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+        </button>
+
+      </mat-form-field>
+
+      <div *ngIf="errorMessage" class="error-message">
+        <mat-error>{{ errorMessage }}</mat-error>
+      </div>
+
+      <button mat-raised-button color="primary" type="submit" class="login-button">
+        INICIAR SESIÓN
+      </button>
+
+      <button
+        mat-stroked-button
+        color="accent"
+        type="button"
+        class="admin-button"
+        (click)="goToAdminLogin()"
+      >
+        Soy administrador
+      </button>
+
+      <div class="login-footer">
+        <p>
+          ¿No tienes una cuenta?
+          <a routerLink="/registrate">Regístrate aquí</a>
+        </p>
+      </div>
+    </form>
+  </mat-card>
+</div>
