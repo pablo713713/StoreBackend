@@ -9,6 +9,9 @@ public class Validation {
         throw new UnsupportedOperationException("Utility class");
     }
 
+    private static final int MIN_PWD_LEN = 5;
+    private static final int MAX_PWD_LEN = 128; // límite para evitar abusos
+
     public static boolean isValidUsername(String username) {
         if (username == null) return false;
         return username.length() > 4;
@@ -16,9 +19,19 @@ public class Validation {
 
     public static boolean isValidPassword(String password) {
         if (password == null) return false;
-        boolean hasLetter = password.matches(".*[a-zA-Z].*");
-        boolean hasDigit = password.matches(".*\\d.*");
-        return password.length() > 4 && hasLetter && hasDigit;
+        int len = password.length();
+        if (len < MIN_PWD_LEN || len > MAX_PWD_LEN) return false;
+
+        boolean hasLetter = false;
+        boolean hasDigit = false;
+
+        for (int i = 0; i < len; i++) {
+            char c = password.charAt(i);
+            if (Character.isLetter(c)) hasLetter = true;
+            if (Character.isDigit(c)) hasDigit = true;
+            if (hasLetter && hasDigit) return true;
+        }
+        return false;
     }
 
     public static boolean isTimeGone(Date date) {
@@ -37,7 +50,7 @@ public class Validation {
 
     public static boolean isValidCreditCardNumber(String number) {
         if (number == null) return false;
-        return number.matches("\\d{16}");
+        return number.matches("\\d{16}"); // este patrón es seguro (no hay backtracking peligroso)
     }
 
     public static boolean isValidPayPalEmail(String email) {

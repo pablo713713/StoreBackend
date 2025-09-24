@@ -6,11 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="b13d44a8-3992-4705-929c-80e9cdf82904" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/onlinestore/controller/CartController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/onlinestore/controller/CartController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/onlinestore/model/Admin.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/onlinestore/model/Admin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/example/onlinestore/model/CreditCardPayment.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/example/onlinestore/model/CreditCardPayment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -94,7 +89,7 @@
       <command value="mvn clean verify sonar:sonar    -Dsonar.projectKey=StoreBackend    -Dsonar.projectName='StoreBackend'    -Dsonar.host.url=http://localhost:9000    -Dsonar.token=sqp_df6ed2f2f5f9de769cb2596675f8ba3253eb6399" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.AdminControllerTest">
+  <component name="RunManager" selected="JUnit.ValidationTest">
     <configuration name="AdminControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="onlineStore" />
       <extension name="coverage">
@@ -140,6 +135,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="ValidationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="onlineStore" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.example.onlinestore.model.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.example.onlinestore.model" />
+      <option name="MAIN_CLASS_NAME" value="com.example.onlinestore.model.ValidationTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="OnlineStoreApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="onlineStore" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="com.example.onlinestore.OnlineStoreApplication" />
@@ -149,6 +159,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ValidationTest" />
         <item itemvalue="JUnit.AdminControllerTest" />
         <item itemvalue="JUnit.ClientTest" />
         <item itemvalue="JUnit.CategoryTest" />
@@ -173,7 +184,8 @@
       <workItem from="1758085811049" duration="1380000" />
       <workItem from="1758597183081" duration="6448000" />
       <workItem from="1758641666309" duration="3898000" />
-      <workItem from="1758682734491" duration="1650000" />
+      <workItem from="1758682734491" duration="4527000" />
+      <workItem from="1758688302837" duration="57000" />
     </task>
     <servers />
   </component>
