@@ -47,7 +47,8 @@ export class PaymentModalComponent {
   }
 
   private expIsFuture(mmYY: string): boolean {
-    const m = mmYY.match(/^(\d{2})\/(\d{2})$/);
+    const regex = /^(\d{2})\/(\d{2})$/;
+    const m = regex.exec(mmYY);
     if (!m) return false;
     const mm = +m[1], yy = +m[2];
     if (mm < 1 || mm > 12) return false;
