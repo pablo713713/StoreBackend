@@ -8,7 +8,7 @@ import { AddItemRequest, CartItem } from '../models/product.model';
 export class CartApiService {
   private readonly base = `${environment.apiUrl}/cart`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {}
 
   getCart(cartId: number): Observable<CartItem[]> {
     return this.http.get<CartItem[]>(`${this.base}/${cartId}`);
