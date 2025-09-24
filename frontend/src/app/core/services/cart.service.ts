@@ -14,7 +14,7 @@ export class CartService {
   readonly count$: Observable<number>;
   readonly total$: Observable<number>;
 
-  constructor(private api: CartApiService, private products: ProductService) {
+  constructor(private readonly api: CartApiService, private readonly products: ProductService) {
 
     this.items$ = combineLatest([this._rawItems$, this.products.indexById$]).pipe(
       map(([items, idx]) =>
