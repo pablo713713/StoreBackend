@@ -30,7 +30,7 @@ export class CartDrawerComponent implements OnInit {
 
   codes: Record<number, string> = {};
 
-  constructor(private cart: CartService) {}
+  constructor(private readonly cart: CartService) {}
 
   ngOnInit(): void {
     this.items$ = this.cart.items$;
