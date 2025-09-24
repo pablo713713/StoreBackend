@@ -32,7 +32,9 @@ export class PaymentModalComponent {
 
   // ---------- Validaciones ----------
   isValidPaypal(): boolean {
-    return /\S+@\S+\.\S+/.test(this.email) && this.password.trim().length >= 4;
+    // Simple, safe email regex: no super-linear backtracking
+    const emailRegex = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    return emailRegex.test(this.email) && this.password.trim().length >= 4;
   }
 
   private luhnCheck(num: string): boolean {
