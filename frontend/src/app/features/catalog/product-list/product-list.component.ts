@@ -16,7 +16,7 @@ import { FormsModule } from '@angular/forms';
 export class ProductListComponent implements OnInit {
   products$!: Observable<Product[]>;
 
-  constructor(private api: ProductService, private cart: CartService) {}
+  constructor(private readonly api: ProductService, private readonly cart: CartService) {}
 
   ngOnInit(){ this.products$ = this.api.getAll(); }
 
