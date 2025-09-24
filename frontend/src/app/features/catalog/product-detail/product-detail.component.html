@@ -22,18 +22,26 @@
       </div>
 
       <div class="input">
-        <label>Ingresar código de promoción</label>
+        <label for="promoCodeInput">Ingresar código de promoción</label>
         <!-- 👇 enlazamos el código a la propiedad promoCode -->
-        <input placeholder="P. ej., OFERTA50" [(ngModel)]="promoCode"/>
+        <input id="promoCodeInput" placeholder="P. ej., OFERTA50" [(ngModel)]="promoCode"/>
         <button class="btn secondary" type="button" style="margin-top:8px"
                 (click)="applyCode(p)">Aplicar</button>
       </div>
 
       <table class="table">
-        <tr>
-          <td>Total estimado</td>
-          <td style="text-align:right">{{ (qty * p.price) | number:'1.2-2' }} Bs</td>
-        </tr>
+        <thead>
+          <tr>
+            <th>Descripción</th>
+            <th style="text-align:right">Monto</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Total estimado</td>
+            <td style="text-align:right">{{ (qty * p.price) | number:'1.2-2' }} Bs</td>
+          </tr>
+        </tbody>
       </table>
 
       <button class="btn" type="button" (click)="addThenApply(p)">Agregar a carrito</button>
