@@ -5,7 +5,7 @@ import { Product } from '../models/product.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService {
-  private ProductUrl = 'http://localhost:8080/api/products';
+  private readonly ProductUrl = 'http://localhost:8080/api/products';
 
   readonly list$: Observable<Product[]>;
   readonly indexById$: Observable<Map<number, Product>>;
