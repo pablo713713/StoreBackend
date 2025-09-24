@@ -59,7 +59,7 @@ h1{
   margin:0 0 6px
 }
 .cart-btn i { font-size: 18px; }
-.cart-btn { gap: 10px; }.actions {
+.actions {
   display: flex;
   align-items: center;
   gap: 18px;
