@@ -10,7 +10,7 @@ export class ProductService {
   readonly list$: Observable<Product[]>;
   readonly indexById$: Observable<Map<number, Product>>;
 
-  constructor(private http: HttpClient) {
+  constructor(private readonly http: HttpClient) {
     this.list$ = this.http.get<Product[]>(this.ProductUrl).pipe(shareReplay(1));
     this.indexById$ = this.list$.pipe(
       map(list => {
