@@ -1,4 +1,4 @@
-<div class="header" role="banner">
+<header class="header">
   <div class="container row">
     <div [routerLink]="['/']" class="brand" aria-label="Inicio">
       <img src="assets/img/logo.svg" alt="Biba">
@@ -23,5 +23,5 @@
         <span class="cart-count">{{ (count$ | async) ?? 0 }}</span>
       </button>
     </div>
-  </div>
+  </header>
 </div>
