@@ -33,7 +33,7 @@ export class LoginComponent {
 
   loggedClient: any = null;
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private readonly http: HttpClient, private readonly router: Router) {}
 
   onSubmit() {
     this.http.post<Client>('http://localhost:8080/clients/login',
