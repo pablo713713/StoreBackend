@@ -6,7 +6,7 @@ import { AddItemRequest, CartItem } from '../models/product.model';
 
 @Injectable({ providedIn: 'root' })
 export class CartApiService {
-  private base = `${environment.apiUrl}/cart`;
+  private readonly base = `${environment.apiUrl}/cart`;
 
   constructor(private http: HttpClient) {}
 
