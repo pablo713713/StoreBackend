@@ -24,11 +24,6 @@ public class Admin extends User {
         this.adminInventory = adminInventory;
     }
 
-    @Deprecated
-    public Admin(String name, String firstLastName, String secondLastName,
-                 int ignored, String accessCode, Inventory adminInventory) {
-        this(name, firstLastName, secondLastName, accessCode, adminInventory);
-    }
 
     public String getAccessCode() {
         return accessCode;
