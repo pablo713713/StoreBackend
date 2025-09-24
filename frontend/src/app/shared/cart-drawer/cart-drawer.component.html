@@ -1,4 +1,4 @@
-<aside class="cart-drawer" [class.open]="openDrawer" role="dialog" aria-label="Carrito">
+<dialog class="cart-drawer" [class.open]="openDrawer" aria-label="Carrito">
   <div class="drawer-topbar">
     <strong>Carrito ({{ (items$ | async)?.length || 0 }} ítem)</strong>
     <button class="icon-btn light" (click)="close()" aria-label="Cerrar">
