@@ -13,7 +13,7 @@ import { CartService } from '../../core/services/cart.service';
 export class PaymentModalComponent {
   @Input() total: number = 0;
   @Input() clientId!: number;
-  @Output() close = new EventEmitter<void>();
+  @Output() modalClose = new EventEmitter<void>();
 
   selectedMethod: 'paypal' | 'creditcard' = 'paypal';
   loading = false;
@@ -92,7 +92,7 @@ export class PaymentModalComponent {
     setTimeout(() => {
       this.loading = false;
       alert('✅ ¡Compra exitosa! Gracias por tu pago.');
-      this.close.emit();
+      this.modalClose.emit();
     }, 300);
   }
 }
