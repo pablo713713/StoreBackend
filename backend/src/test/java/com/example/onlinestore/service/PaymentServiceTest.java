@@ -46,5 +46,16 @@ class PaymentServiceTest {
 		assertEquals("No se ha asignado método de pago", details);
 	}
 
+	@Test
+	void getPaymentDetailsWithMethodReturnsDetails() {
+		when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
+		Payment payment = new CreatorCreditCardPayment(new BigDecimal("123.45"),
+				"4111111111117777", "John Doe", "12/29", "123");
+		client.setPaymentMethod(payment);
+
+		String details = paymentService.getPaymentDetails(1L);
+
+		assertEquals("CreditCard ****7777", details);
+	}
 }
 
