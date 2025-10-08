@@ -132,4 +132,19 @@ class AdminControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
+    @Test
+    void testDeleteSuccess() {
+        ResponseEntity<Object> response = controller.delete(1L);
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        verify(service).delete(1L);
+    }
+
+    @Test
+    void testDeleteNotFound() {
+        doThrow(new IllegalStateException()).when(service).delete(1L);
+        ResponseEntity<Object> response = controller.delete(1L);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
+
 }
