@@ -13,7 +13,7 @@ public class Admin extends User {
     @JoinColumn(name = "inventory_id", referencedColumnName = "id", unique = true)
     private Inventory adminInventory;
 
-    protected Admin() {
+    public Admin() {
         // requerido por JPA
     }
 
