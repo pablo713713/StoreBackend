@@ -96,8 +96,8 @@ public class AdminController {
     private boolean isConflictMessage(String msg) {
         if (msg == null) return false;
         String lower = msg.toLowerCase();
-        return lower.contains("already exists") || lower.contains("already assigned");
-    }
+            return lower.contains("already exists") || lower.contains("already assigned");
+        }
 
     private String messageOrDefault(IllegalStateException e, String fallback) {
         return (e.getMessage() != null && !e.getMessage().isBlank()) ? e.getMessage() : fallback;
