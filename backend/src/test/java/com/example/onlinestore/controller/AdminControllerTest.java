@@ -39,6 +39,36 @@ class AdminControllerTest {
         verify(service).getAll();
     }
 
+    @Test
+    void testGetByIdSuccess() {
+        when(service.getById(1L)).thenReturn(admin);
+        ResponseEntity<Object> response = controller.getById(1L);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(admin, response.getBody());
+    }
+
+    @Test
+    void testGetByIdNotFound() {
+        when(service.getById(1L)).thenThrow(new IllegalStateException());
+        ResponseEntity<Object> response = controller.getById(1L);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+    }
+
+    @Test
+    void testCreateSuccess() {
+        when(service.create(admin)).thenReturn(admin);
+        ResponseEntity<Object> response = controller.create(admin);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(admin, response.getBody());
+    }
+
+    @Test
+    void testCreateBadRequest() {
+        when(service.create(admin)).thenThrow(new IllegalStateException("invalid"));
+        ResponseEntity<Object> response = controller.create(admin);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
 
 
 }
