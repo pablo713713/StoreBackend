@@ -112,4 +112,68 @@
 		</plugins>
 	</build>
 
+	<profiles>
+		<!-- OpenClover coverage profile -->
+		<profile>
+			<id>clover</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.openclover</groupId>
+						<artifactId>clover-maven-plugin</artifactId>
+						<version>4.5.1</version>
+						<configuration>
+							<generateHtml>true</generateHtml>
+							<singleCloverDatabase>true</singleCloverDatabase>
+							<jdk>1.8</jdk>
+						</configuration>
+						<executions>
+							<execution>
+								<id>clover-setup</id>
+								<phase>initialize</phase>
+								<goals>
+									<goal>setup</goal>
+								</goals>
+							</execution>
+							<execution>
+								<id>clover-report</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>aggregate</goal>
+									<goal>clover</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<!-- PIT mutation testing profile -->
+		<profile>
+			<id>mutation</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.pitest</groupId>
+						<artifactId>pitest-maven</artifactId>
+						<version>1.15.8</version>
+						<configuration>
+							<targetClasses>
+								<param>com.example.onlinestore.service.*</param>
+							</targetClasses>
+							<targetTests>
+								<param>com.example.onlinestore.*</param>
+							</targetTests>
+							<threads>2</threads>
+							<outputFormats>
+								<param>HTML</param>
+							</outputFormats>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
