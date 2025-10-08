@@ -95,5 +95,41 @@ class AdminControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
+    @Test
+    void testSetInventorySuccess() {
+        when(service.setInventory(1L, 2L)).thenReturn(admin);
+        ResponseEntity<Object> response = controller.setInventory(1L, 2L);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testSetInventoryConflict() {
+        when(service.setInventory(1L, 2L))
+                .thenThrow(new IllegalStateException("already assigned"));
+        ResponseEntity<Object> response = controller.setInventory(1L, 2L);
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+    }
+
+    @Test
+    void testSetInventoryBadRequest() {
+        when(service.setInventory(1L, 2L))
+                .thenThrow(new IllegalStateException("invalid inventory"));
+        ResponseEntity<Object> response = controller.setInventory(1L, 2L);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    @Test
+    void testRemoveInventorySuccess() {
+        when(service.removeInventory(1L)).thenReturn(admin);
+        ResponseEntity<Object> response = controller.removeInventory(1L);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+    }
+
+    @Test
+    void testRemoveInventoryNotFound() {
+        when(service.removeInventory(1L)).thenThrow(new IllegalStateException());
+        ResponseEntity<Object> response = controller.removeInventory(1L);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
 
 }
