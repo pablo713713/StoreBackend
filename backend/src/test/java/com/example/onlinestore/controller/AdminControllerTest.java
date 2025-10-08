@@ -70,5 +70,30 @@ class AdminControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
+    @Test
+    void testUpdateSuccess() {
+        when(service.update(1L, admin)).thenReturn(admin);
+        ResponseEntity<Object> response = controller.update(1L, admin);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(admin, response.getBody());
+    }
+
+    @Test
+    void testUpdateConflict() {
+        when(service.update(1L, admin))
+                .thenThrow(new IllegalStateException("already exists"));
+        ResponseEntity<Object> response = controller.update(1L, admin);
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertTrue(((String) response.getBody()).contains("already exists"));
+    }
+
+    @Test
+    void testUpdateNotFound() {
+        when(service.update(1L, admin))
+                .thenThrow(new IllegalStateException("not found"));
+        ResponseEntity<Object> response = controller.update(1L, admin);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+    }
+
 
 }
