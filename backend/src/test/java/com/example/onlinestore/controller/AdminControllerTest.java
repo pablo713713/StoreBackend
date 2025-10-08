@@ -146,5 +146,60 @@ class AdminControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
+    @Test
+    void testIsConflictMessage() throws Exception {
+        var method = AdminController.class.getDeclaredMethod("isConflictMessage", String.class);
+        method.setAccessible(true);
+
+        // true → contiene palabras de conflicto
+        assertTrue((boolean) method.invoke(controller, "already exists"));
+
+        // false → mensaje diferente
+        assertFalse((boolean) method.invoke(controller, "other text"));
+
+        // false → null
+        assertFalse((boolean) method.invoke(controller, new Object[]{null}));
+    }
+
+    @Test
+    void testMessageOrDefault() throws Exception {
+        var method = AdminController.class
+                .getDeclaredMethod("messageOrDefault", IllegalStateException.class, String.class);
+        method.setAccessible(true);
+        IllegalStateException e1 = new IllegalStateException("msg");
+        IllegalStateException e2 = new IllegalStateException("");
+        assertEquals("msg", method.invoke(controller, e1, "fallback"));
+        assertEquals("fallback", method.invoke(controller, e2, "fallback"));
+    }
+
+
+
+    // 16️⃣ buildConflictOrBadRequest() - conflict
+    @Test
+    void testBuildConflictOrBadRequestConflict() {
+        IllegalStateException e = new IllegalStateException("already exists");
+        ResponseEntity<Object> response = invokeBuildConflictOrBadRequest(e, "msg");
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+    }
+
+    // 17️⃣ buildConflictOrBadRequest() - bad request
+    @Test
+    void testBuildConflictOrBadRequestBadRequest() {
+        IllegalStateException e = new IllegalStateException("invalid");
+        ResponseEntity<Object> response = invokeBuildConflictOrBadRequest(e, "msg");
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+    }
+
+    // Helpers privados: accedemos mediante reflexión
+    private ResponseEntity<Object> invokeBuildConflictOrBadRequest(IllegalStateException e, String msg) {
+        try {
+            var method = AdminController.class
+                    .getDeclaredMethod("buildConflictOrBadRequest", IllegalStateException.class, String.class);
+            method.setAccessible(true);
+            return (ResponseEntity<Object>) method.invoke(controller, e, msg);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
 }
