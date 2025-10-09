@@ -151,13 +151,16 @@ class AdminControllerTest {
         var method = AdminController.class.getDeclaredMethod("isConflictMessage", String.class);
         method.setAccessible(true);
 
-        // true → contiene palabras de conflicto
+        // true → contiene "already exists" (ya estaba)
         assertTrue((boolean) method.invoke(controller, "already exists"));
 
-        // false → mensaje diferente
+        // true → contiene "already assigned" (¡NUEVO para cobertura!)
+        assertTrue((boolean) method.invoke(controller, "this resource is already assigned to a user"));
+
+        // false → mensaje diferente (ya estaba)
         assertFalse((boolean) method.invoke(controller, "other text"));
 
-        // false → null
+        // false → null (ya estaba)
         assertFalse((boolean) method.invoke(controller, new Object[]{null}));
     }
 
@@ -166,15 +169,22 @@ class AdminControllerTest {
         var method = AdminController.class
                 .getDeclaredMethod("messageOrDefault", IllegalStateException.class, String.class);
         method.setAccessible(true);
+
+        // e.getMessage() NO es null y NO es blank (devuelve mensaje)
         IllegalStateException e1 = new IllegalStateException("msg");
-        IllegalStateException e2 = new IllegalStateException("");
         assertEquals("msg", method.invoke(controller, e1, "fallback"));
+
+        // e.getMessage() NO es null pero SÍ es blank (devuelve fallback)
+        IllegalStateException e2 = new IllegalStateException("");
         assertEquals("fallback", method.invoke(controller, e2, "fallback"));
+
+        // e.getMessage() es null (devuelve fallback) (¡NUEVO para cobertura!)
+        IllegalStateException e3 = new IllegalStateException();
+        assertEquals("fallback", method.invoke(controller, e3, "fallback"));
     }
 
 
 
-    // 16️⃣ buildConflictOrBadRequest() - conflict
     @Test
     void testBuildConflictOrBadRequestConflict() {
         IllegalStateException e = new IllegalStateException("already exists");
@@ -182,7 +192,6 @@ class AdminControllerTest {
         assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
     }
 
-    // 17️⃣ buildConflictOrBadRequest() - bad request
     @Test
     void testBuildConflictOrBadRequestBadRequest() {
         IllegalStateException e = new IllegalStateException("invalid");
@@ -190,7 +199,6 @@ class AdminControllerTest {
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
-    // Helpers privados: accedemos mediante reflexión
     private ResponseEntity<Object> invokeBuildConflictOrBadRequest(IllegalStateException e, String msg) {
         try {
             var method = AdminController.class
