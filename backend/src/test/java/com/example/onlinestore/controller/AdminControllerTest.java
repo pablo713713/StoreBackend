@@ -97,7 +97,6 @@ class AdminControllerTest {
 
     @Test
     void testSetInventorySuccess() {
-        // CORREGIDO: Se agregó el paréntesis de cierre en el when()
         when(service.setInventory(Long.valueOf(1L), Long.valueOf(2L))).thenReturn(admin);
         ResponseEntity<Object> response = controller.setInventory(Long.valueOf(1L), Long.valueOf(2L));
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -105,9 +104,7 @@ class AdminControllerTest {
 
     @Test
     void testSetInventoryConflict() {
-        // NOTA: Se ajustaron los valores de entrada para el stubbing (2L, 1L)
-        // para que coincida con la llamada al controller (1L, 2L) si esa es la intención.
-        // Si no, se mantiene la lógica original. Asumo que el stubbing debe ser (1L, 2L)
+
         when(service.setInventory(Long.valueOf(1L), Long.valueOf(2L)))
                 .thenThrow(new IllegalStateException("already assigned"));
         ResponseEntity<Object> response = controller.setInventory(Long.valueOf(1L), Long.valueOf(2L));
@@ -118,7 +115,6 @@ class AdminControllerTest {
     void testSetInventoryBadRequest() {
         when(service.setInventory(Long.valueOf(1L), Long.valueOf(2L)))
                 .thenThrow(new IllegalStateException("invalid inventory"));
-        // CORREGIDO: Eliminado el error de sintaxis "1LLong.valueOf(1L)" en la llamada al controller.
         ResponseEntity<Object> response = controller.setInventory(Long.valueOf(1L), Long.valueOf(2L));
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
@@ -156,16 +152,12 @@ class AdminControllerTest {
         var method = AdminController.class.getDeclaredMethod("isConflictMessage", String.class);
         method.setAccessible(true);
 
-        // true → contiene "already exists" (ya estaba)
         assertTrue((boolean) method.invoke(controller, "already exists"));
 
-        // true → contiene "already assigned" (¡NUEVO para cobertura!)
         assertTrue((boolean) method.invoke(controller, "this resource is already assigned to a user"));
 
-        // false → mensaje diferente (ya estaba)
         assertFalse((boolean) method.invoke(controller, "other text"));
 
-        // false → null (ya estaba)
         assertFalse((boolean) method.invoke(controller, new Object[]{null}));
     }
 
@@ -175,15 +167,12 @@ class AdminControllerTest {
                 .getDeclaredMethod("messageOrDefault", IllegalStateException.class, String.class);
         method.setAccessible(true);
 
-        // e.getMessage() NO es null y NO es blank (devuelve mensaje)
         IllegalStateException e1 = new IllegalStateException("msg");
         assertEquals("msg", method.invoke(controller, e1, "fallback"));
 
-        // e.getMessage() NO es null pero SÍ es blank (devuelve fallback)
         IllegalStateException e2 = new IllegalStateException("");
         assertEquals("fallback", method.invoke(controller, e2, "fallback"));
 
-        // e.getMessage() es null (devuelve fallback) (¡NUEVO para cobertura!)
         IllegalStateException e3 = new IllegalStateException();
         assertEquals("fallback", method.invoke(controller, e3, "fallback"));
     }
