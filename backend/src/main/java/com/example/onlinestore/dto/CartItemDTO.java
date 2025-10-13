@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 
 public class CartItemDTO {
 
-    private Long productId;
-    private String nameProduct;
-    private BigDecimal price;
-    private int qty;
+    public Long productId;
+    public String nameProduct;
+    public BigDecimal price;
+    public int qty;
 
     public CartItemDTO(Long productId, String nameProduct, BigDecimal price, int qty) {
         this.productId = productId;
