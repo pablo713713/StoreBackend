@@ -156,6 +156,42 @@ class CartControllerTest {
         assertEquals(204, response.getStatusCodeValue());
         verify(service).clearCart(9L);
     }
+    @Test
+    void testApplyCode() {
+        CartController.ApplyCodeRequest req = new CartController.ApplyCodeRequest();
+        req.setCode("PROMO10");
+
+        CartItem updated = mockCartItem(2L, "Item Con Código", 1, BigDecimal.valueOf(5));
+        when(service.applyCode(1L, 2L, "PROMO10")).thenReturn(updated);
+
+        ResponseEntity<CartItemDTO> response = controller.applyCode(1L, 2L, req);
+
+        assertEquals("Item Con Código", response.getBody().getNameProduct());
+        assertEquals(BigDecimal.valueOf(5), response.getBody().getPrice());
+    }
+    @Test
+    void testRemoveCode() {
+        CartItem updated = mockCartItem(2L, "Item Sin Código", 1, BigDecimal.valueOf(10));
+        when(service.removeCode(1L, 2L)).thenReturn(updated);
+
+        ResponseEntity<CartItemDTO> response = controller.removeCode(1L, 2L);
+
+        assertEquals("Item Sin Código", response.getBody().getNameProduct());
+        assertEquals(BigDecimal.valueOf(10), response.getBody().getPrice());
+    }
+    @Test
+    void testToDtoEffective() throws Exception {
+        CartItem item = mockCartItem(1L, "Producto DTO", 3, BigDecimal.valueOf(12));
+
+        Method method = CartController.class.getDeclaredMethod("toDtoEffective", CartItem.class);
+        method.setAccessible(true);
+
+        CartItemDTO dto = (CartItemDTO) method.invoke(controller, item);
+
+        assertEquals("Producto DTO", dto.getNameProduct());
+        assertEquals(3, dto.getQty());
+        assertEquals(BigDecimal.valueOf(12), dto.getPrice());
+    }
 
 
 }
