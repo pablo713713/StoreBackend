@@ -97,5 +97,47 @@ class CartControllerTest {
         verify(cartRepo).save(any());
     }
 
+    @Test
+    void testAddItem() {
+        CartController.AddItemRequest req = new CartController.AddItemRequest();
+        req.setCartId(1L);
+        req.setProductId(2L);
+        req.setQuantity(3);
+
+        CartItem item = mockCartItem(2L, "Producto X", 3, BigDecimal.valueOf(20));
+        when(service.addItem(1L, 2L, 3)).thenReturn(item);
+
+        ResponseEntity<CartItemDTO> response = controller.addItem(req);
+
+        assertEquals(URI.create("/api/cart/1"), response.getHeaders().getLocation());
+        assertEquals("Producto X", response.getBody().getNameProduct());
+        assertEquals(BigDecimal.valueOf(20), response.getBody().getPrice());
+    }
+
+    @Test
+    void testUpdateQuantity() {
+        CartController.UpdateQuantityRequest req = new CartController.UpdateQuantityRequest();
+        req.setQuantity(5);
+
+        CartItem updated = mockCartItem(3L, "Actualizado", 5, BigDecimal.valueOf(15));
+        when(service.updateQuantity(10L, 5)).thenReturn(updated);
+
+        ResponseEntity<CartItemDTO> response = controller.updateQuantity(10L, req);
+
+        assertEquals("Actualizado", response.getBody().getNameProduct());
+        assertEquals(BigDecimal.valueOf(15), response.getBody().getPrice());
+    }
+
+    @Test
+    void testUpdateQuantityByProduct() {
+        CartController.UpdateQuantityRequest req = new CartController.UpdateQuantityRequest();
+        req.setQuantity(7);
+
+        ResponseEntity<Void> response = controller.updateQuantityByProduct(1L, 2L, req);
+
+        assertEquals(204, response.getStatusCodeValue());
+        verify(service).updateQuantityByProduct(1L, 2L, 7);
+    }
+
 
 }
