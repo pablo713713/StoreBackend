@@ -138,6 +138,24 @@ class CartControllerTest {
         assertEquals(204, response.getStatusCodeValue());
         verify(service).updateQuantityByProduct(1L, 2L, 7);
     }
+    @Test
+    void testRemoveByProduct() {
+        ResponseEntity<Void> response = controller.removeByProduct(1L, 2L);
+        assertEquals(204, response.getStatusCodeValue());
+        verify(service).removeByProduct(1L, 2L);
+    }
+    @Test
+    void testRemoveItem() {
+        ResponseEntity<Void> response = controller.removeItem(5L);
+        assertEquals(204, response.getStatusCodeValue());
+        verify(service).removeItem(5L);
+    }
+    @Test
+    void testClearCart() {
+        ResponseEntity<Void> response = controller.clearCart(9L);
+        assertEquals(204, response.getStatusCodeValue());
+        verify(service).clearCart(9L);
+    }
 
 
 }
