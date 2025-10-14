@@ -90,5 +90,63 @@ class PaymentServiceTest {
 
 		assertTrue(result);
 	}
+
+	//test for createPaymentForClient method
+
+	private static final String TYPE_PAYPAL = "paypal";
+	private static final String TYPE_CREDITCARD = "creditcard";
+
+	@Test
+	void createPaymentForClientClientNotFoundThrows() {
+		when(clientRepository.findById(1L)).thenReturn(Optional.empty());
+		IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+				paymentService.createPaymentForClient(1L, TYPE_PAYPAL, AMOUNT, "user@example.com", "pwd")
+		);
+		assertEquals("Cliente no encontrado", ex.getMessage());
+	}
+
+	@Test
+	void createPaymentForClientPaypalMissingParamsThrows() {
+		when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
+		IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+				paymentService.createPaymentForClient(1L, TYPE_PAYPAL, AMOUNT, "solo_email")
+		);
+		assertEquals("Faltan parámetros para PayPal", ex.getMessage());
+	}
+
+	@Test
+	void createPaymentForClientPaypalInvalidEmailThrows() {
+		when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
+		IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+				paymentService.createPaymentForClient(1L, TYPE_PAYPAL, AMOUNT, "email_invalido", "pwd")
+		);
+		assertEquals("Email de PayPal inválido", ex.getMessage());
+	}
+
+	@Test
+	void createPaymentForClientPaypalSuccess() {
+		when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
+		Payment payment = paymentService.createPaymentForClient(1L, TYPE_PAYPAL, AMOUNT, "user@example.com", "pwdSegura");
+		assertTrue(payment instanceof com.example.onlinestore.model.CreatorPayPalPayment);
+		assertEquals(payment, client.getPaymentMethod());
+	}
+
+	@Test
+	void createPaymentForClientCreditCardMissingParamsThrows() {
+		when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
+		IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+				paymentService.createPaymentForClient(1L, TYPE_CREDITCARD, AMOUNT, CARD_NUMBER, CARD_HOLDER)
+		);
+		assertEquals("Faltan parámetros para CreditCard", ex.getMessage());
+	}
+
+	@Test
+	void createPaymentForClientCreditCardSuccess() {
+		when(clientRepository.findById(1L)).thenReturn(Optional.of(client));
+		Payment payment = paymentService.createPaymentForClient(1L, TYPE_CREDITCARD, SMALL_AMOUNT,
+				CARD_NUMBER, CARD_HOLDER, EXPIRY_DATE, CVV);
+		assertTrue(payment instanceof CreatorCreditCardPayment);
+		assertEquals(payment, client.getPaymentMethod());
+	}
 }
 
