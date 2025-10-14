@@ -58,6 +58,67 @@ public class CategoryControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(categoryService).getById(1L);
     }
+    @Test
+    void testCreateCategorySuccess() {
+        Category category = new Category("Furniture", "Home items");
+        when(categoryService.create(category)).thenReturn(category);
+
+        ResponseEntity<Object> response = categoryController.create(category);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(category, response.getBody());
+        verify(categoryService).create(category);
+    }
+
+    @Test
+    void testCreateCategoryConflict() {
+        Category category = new Category("Furniture", "Home items");
+        when(categoryService.create(category))
+                .thenThrow(new IllegalStateException("Category name already exists: Furniture"));
+
+        ResponseEntity<Object> response = categoryController.create(category);
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertEquals("Category name already exists: Furniture", response.getBody());
+        verify(categoryService).create(category);
+    }
+    @Test
+    void testUpdateCategorySuccess() {
+        Category updated = new Category("Toys", "Kids products");
+        when(categoryService.update(1L, updated)).thenReturn(updated);
+
+        ResponseEntity<Object> response = categoryController.update(1L, updated);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(updated, response.getBody());
+        verify(categoryService).update(1L, updated);
+    }
+
+    @Test
+    void testUpdateCategoryConflictExistsMessage() {
+        Category updated = new Category("Toys", "Kids products");
+        when(categoryService.update(1L, updated))
+                .thenThrow(new IllegalStateException("Category name already exists"));
+
+        ResponseEntity<Object> response = categoryController.update(1L, updated);
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertEquals("Category name already exists", response.getBody());
+        verify(categoryService).update(1L, updated);
+    }
+
+    @Test
+    void testUpdateCategoryNotFound() {
+        Category updated = new Category("Toys", "Kids products");
+        when(categoryService.update(1L, updated))
+                .thenThrow(new IllegalStateException("Category not found"));
+
+        ResponseEntity<Object> response = categoryController.update(1L, updated);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+        verify(categoryService).update(1L, updated);
+    }
 
 
 }
