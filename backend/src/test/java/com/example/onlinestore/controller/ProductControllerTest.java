@@ -116,4 +116,28 @@ class ProductControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(productService).updateProduct(1L, updatedProduct);
     }
+
+    @Test
+    void testDeleteProduct() {
+        // Simulamos la existencia del producto
+        doNothing().when(productService).deleteProduct(1L);
+
+        // Realizamos la solicitud
+        ResponseEntity<Void> response = productController.deleteProduct(1L);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        verify(productService).deleteProduct(1L);
+    }
+
+    @Test
+    void testDeleteProductNotFound() {
+        // Simulamos que el producto no existe
+        doThrow(new IllegalStateException("Product not found")).when(productService).deleteProduct(1L);
+
+        // Realizamos la solicitud
+        ResponseEntity<Void> response = productController.deleteProduct(1L);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(productService).deleteProduct(1L);
+    }
 }
