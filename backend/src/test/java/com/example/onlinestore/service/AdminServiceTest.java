@@ -33,32 +33,19 @@ class AdminServiceTest {
     @InjectMocks
     private AdminService adminService;
 
+
     private Admin admin1;
     private Admin admin2;
     private Inventory inventory1;
 
     @BeforeEach
     void setUp() {
-        inventory1 = new Inventory();
-        inventory1.setId(1L);
-        inventory1.setLocation("Warehouse A");
-
-        admin1 = new Admin();
-        admin1.setId(1L);
-        admin1.setFirstName("John");
-        admin1.setLastName("Doe");
-        admin1.setAccessCode("ADMIN123");
-        admin1.setAdminInventory(inventory1);
-
-        admin2 = new Admin();
-        admin2.setId(2L);
-        admin2.setFirstName("Jane");
-        admin2.setLastName("Smith");
-        admin2.setAccessCode("ADMIN456");
-        admin2.setAdminInventory(null);
+        inventory1 = new Inventory(List.of());
+        admin1 = new Admin("John", "Doe", "", "ADMIN123", inventory1);
+        admin2 = new Admin("Jane", "Smith", "", "ADMIN456", null);
     }
 
-    // Tests for getAll method
+
     @Test
     @DisplayName("getAll should return list of all admins")
     void testGetAll() {
