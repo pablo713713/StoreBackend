@@ -1,6 +1,7 @@
 package com.example.onlinestore.controller;
 
 import com.example.onlinestore.dto.ProductDTO;
+import com.example.onlinestore.model.Discount;
 import com.example.onlinestore.model.Product;
 import com.example.onlinestore.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,17 +25,14 @@ class ProductControllerTest {
 
     @BeforeEach
     void setUp() {
-        // Mockeamos el ProductService
         productService = mock(ProductService.class);
         productController = new ProductController(productService);
     }
 
     @Test
     void testGetAllProducts() {
-        // Creamos un producto simulado en DTO con BigDecimal
         ProductDTO productDTO = new ProductDTO(1L, "Product A", "image.jpg", "Description", BigDecimal.valueOf(100.0), 50);
 
-        // Simulamos la respuesta del servicio
         when(productService.getAllProducts()).thenReturn(List.of(new Product("1L", "Product A", "Description", BigDecimal.valueOf(100.0), 50)));
 
         List<ProductDTO> result = productController.getAllProducts();
@@ -45,7 +44,6 @@ class ProductControllerTest {
     }
     @Test
     void testGetProductById() {
-        // Creamos un producto simulado
         Product product = new Product("1L", "Product A", "Description", BigDecimal.valueOf(100.0), 50);
 
         // Simulamos la respuesta del servicio
@@ -140,4 +138,97 @@ class ProductControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(productService).deleteProduct(1L);
     }
+    @Test
+    void testAttachDiscount() {
+        // Creamos un producto simulado
+        Product product = new Product("1L", "Product A", "Description", BigDecimal.valueOf(100.0), 50);
+
+        // Simulamos la respuesta del servicio (producto con descuento aplicado)
+        when(productService.attachDiscount(1L, "DISCOUNT10")).thenReturn(product);
+
+        // Realizamos la solicitud
+        ResponseEntity<Product> response = productController.attachDiscount(1L, "DISCOUNT10");
+
+        // Verificamos que el código devuelva OK
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Product A", response.getBody().getNameProduct());
+        verify(productService).attachDiscount(1L, "DISCOUNT10");
+    }
+
+    @Test
+    void testAttachDiscountProductNotFound() {
+        // Simulamos que el producto no existe
+        when(productService.attachDiscount(1L, "DISCOUNT10")).thenThrow(new IllegalStateException("Product not found"));
+
+        // Realizamos la solicitud
+        ResponseEntity<Product> response = productController.attachDiscount(1L, "DISCOUNT10");
+
+        // Verificamos que el código devuelva NOT_FOUND
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(productService).attachDiscount(1L, "DISCOUNT10");
+    }
+
+    @Test
+    void testAttachDiscountDiscountNotFound() {
+        // Simulamos que el producto existe, pero el descuento no se encuentra
+        when(productService.attachDiscount(1L, "DISCOUNT10")).thenThrow(new IllegalStateException("Discount not found"));
+
+        // Realizamos la solicitud
+        ResponseEntity<Product> response = productController.attachDiscount(1L, "DISCOUNT10");
+
+        // Verificamos que el código devuelva NOT_FOUND
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(productService).attachDiscount(1L, "DISCOUNT10");
+    }
+    @Test
+    void testRemoveDiscount() {
+        // Creamos un producto simulado con descuento (ahora con 5 parámetros en Discount)
+        Product product = new Product("1L", "Product A", "Description", BigDecimal.valueOf(100.0), 50);
+        Discount discount = new Discount("DISCOUNT10", "Holiday Discount", BigDecimal.valueOf(0.10), new Date(), new Date());
+        product.setDiscount(discount);  // Producto con descuento
+
+        // Simulamos la respuesta del servicio (producto sin descuento después de la eliminación)
+        when(productService.removeDiscount(1L)).thenReturn(new Product("1L", "Product A", "Description", BigDecimal.valueOf(100.0), 50)); // Devolvemos el producto sin descuento
+
+        // Realizamos la solicitud
+        ResponseEntity<Product> response = productController.removeDiscount(1L);
+
+        // Verificamos que el código devuelva OK y que el producto ya no tenga descuento
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNull(response.getBody().getDiscount()); // Descuento eliminado
+        verify(productService).removeDiscount(1L);
+    }
+
+
+    @Test
+    void testRemoveDiscountProductNotFound() {
+        // Simulamos que el producto no existe
+        when(productService.removeDiscount(1L)).thenThrow(new IllegalStateException("Product not found"));
+
+        // Realizamos la solicitud
+        ResponseEntity<Product> response = productController.removeDiscount(1L);
+
+        // Verificamos que el código devuelva NOT_FOUND
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(productService).removeDiscount(1L);
+    }
+
+    @Test
+    void testRemoveDiscountNoDiscount() {
+        // Creamos un producto sin descuento (ahora con 5 parámetros)
+        Product product = new Product("1L", "Product A", "Description", BigDecimal.valueOf(100.0), 50); // Producto sin descuento
+
+        // Simulamos la existencia del producto sin descuento
+        when(productService.removeDiscount(1L)).thenReturn(product);
+
+        // Realizamos la solicitud
+        ResponseEntity<Product> response = productController.removeDiscount(1L);
+
+        // Verificamos que el código devuelva OK y que no se haya modificado el descuento (ya estaba null)
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNull(response.getBody().getDiscount()); // No tiene descuento para eliminar
+        verify(productService).removeDiscount(1L);
+    }
+
 }

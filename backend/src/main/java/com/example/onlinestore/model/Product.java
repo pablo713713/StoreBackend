@@ -37,7 +37,7 @@ public class Product {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "discount_id")
-    private Discount discount;
+    public Discount discount;
 
     protected Product() {
         // requerido por JPA
