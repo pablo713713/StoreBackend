@@ -61,29 +61,31 @@ class AdminServiceTest {
 
     //tests for getById method
 
+
     @Test
     @DisplayName("getById should return admin when found")
     void testGetByIdFound() {
-        when(adminRepository.findById(eq("ADMIN123"))).thenReturn(Optional.of(admin1));
+        when(adminRepository.findById(eq(1L))).thenReturn(Optional.of(admin1));
 
-        Admin admin = adminService.getById("ADMIN123");
+        Admin admin = adminService.getById(1L);
 
         assertNotNull(admin);
-        assertEquals("ADMIN123", admin.getId());
-        verify(adminRepository, times(1)).findById(eq("ADMIN123"));
+        assertEquals("ADMIN123", admin.getAccessCode());
+        verify(adminRepository, times(1)).findById(eq(1L));
     }
 
     @Test
     @DisplayName("getById should throw exception when admin not found")
     void testGetByIdNotFound() {
-        when(adminRepository.findById(eq("ADMIN999"))).thenReturn(Optional.empty());
+        when(adminRepository.findById(eq(999L))).thenReturn(Optional.empty());
 
-        Exception exception = assertThrows(IllegalStateException.class, () -> {
-            adminService.getById("ADMIN999");
-        });
 
-        assertEquals("Admin not found with id: ADMIN999", exception.getMessage());
-        verify(adminRepository, times(1)).findById(eq("ADMIN999"));
+        Exception exception = assertThrows(IllegalStateException.class, () ->
+            adminService.getById(999L)
+        );
+
+        assertEquals("Admin not found with id: 999", exception.getMessage());
+        verify(adminRepository, times(1)).findById(eq(999L));
     }
 
 }
