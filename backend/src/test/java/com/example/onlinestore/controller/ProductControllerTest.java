@@ -43,5 +43,30 @@ class ProductControllerTest {
         assertEquals(BigDecimal.valueOf(100.0), result.get(0).price());
         verify(productService).getAllProducts();
     }
+    @Test
+    void testGetProductById() {
+        // Creamos un producto simulado
+        Product product = new Product("1L", "Product A", "Description", BigDecimal.valueOf(100.0), 50);
 
+        // Simulamos la respuesta del servicio
+        when(productService.getProductById(1L)).thenReturn(Optional.of(product));
+
+        ResponseEntity<ProductDTO> response = productController.getProductById(1L);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Product A", response.getBody().nameProduct());
+        verify(productService).getProductById(1L);
+    }
+
+    @Test
+    void testGetProductByIdNotFound() {
+        // Simulamos que el producto no existe
+        when(productService.getProductById(1L)).thenReturn(Optional.empty());
+
+        ResponseEntity<ProductDTO> response = productController.getProductById(1L);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(productService).getProductById(1L);
+    }
 }
