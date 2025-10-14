@@ -10,24 +10,24 @@ public class Discount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    public Long id;
 
     @Column(name = "discount_code", unique = true, nullable = false, length = 50)
-    private String idDiscount;
+    public String idDiscount;
 
     @Column(nullable = false, length = 120)
-    private String nameDiscount;
+    public String nameDiscount;
 
     @Column(nullable = false, precision = 5, scale = 2)
-    private BigDecimal percentage;
+    public BigDecimal percentage;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date startDate;
+    public Date startDate;
 
     @Temporal(TemporalType.DATE)
     @Column(nullable = false)
-    private Date endDate;
+    public Date endDate;
 
     protected Discount() {
         // requerido por JPA
