@@ -69,4 +69,51 @@ class ProductControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
         verify(productService).getProductById(1L);
     }
+    @Test
+    void testCreateProduct() {
+        // Creamos un producto simulado
+        Product product = new Product("1L", "Product A", "Description", BigDecimal.valueOf(100.0), 50);
+
+        // Simulamos la respuesta del servicio
+        when(productService.createProduct(any(Product.class))).thenReturn(product);
+
+        // Creamos la solicitud
+        ResponseEntity<Product> response = productController.createProduct(product);
+
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals("Product A", response.getBody().getNameProduct());
+        verify(productService).createProduct(any(Product.class));
+    }
+    @Test
+    void testUpdateProduct() {
+        // Creamos un producto simulado
+        Product existingProduct = new Product("1L", "Product A", "Description", BigDecimal.valueOf(100.0), 50);
+        Product updatedProduct = new Product("1L", "Updated Product", "Updated Description", BigDecimal.valueOf(150.0), 60);
+
+        // Simulamos la respuesta del servicio
+        when(productService.updateProduct(1L, updatedProduct)).thenReturn(updatedProduct);
+
+        // Realizamos la solicitud
+        ResponseEntity<Product> response = productController.updateProduct(1L, updatedProduct);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals("Updated Product", response.getBody().getNameProduct());
+        assertEquals(BigDecimal.valueOf(150.0), response.getBody().getPrice());
+        verify(productService).updateProduct(1L, updatedProduct);
+    }
+    @Test
+    void testUpdateProductNotFound() {
+        // Creamos un producto simulado
+        Product updatedProduct = new Product("1L", "Updated Product", "Updated Description", BigDecimal.valueOf(150.0), 60);
+
+        // Simulamos que el producto no existe
+        when(productService.updateProduct(1L, updatedProduct)).thenThrow(new IllegalStateException("Product not found with id: 1L"));
+
+        // Realizamos la solicitud
+        ResponseEntity<Product> response = productController.updateProduct(1L, updatedProduct);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(productService).updateProduct(1L, updatedProduct);
+    }
 }
