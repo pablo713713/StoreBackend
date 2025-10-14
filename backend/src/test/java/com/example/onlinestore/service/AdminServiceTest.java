@@ -58,4 +58,17 @@ class AdminServiceTest {
         admin2.setAdminInventory(null);
     }
 
+    // Tests for getAll method
+    @Test
+    @DisplayName("getAll should return list of all admins")
+    void testGetAll() {
+        when(adminRepository.findAll()).thenReturn(List.of(admin1, admin2));
+
+        List<Admin> admins = adminService.getAll();
+
+        assertNotNull(admins);
+        assertEquals(2, admins.size());
+        verify(adminRepository, times(1)).findAll();
+    }
+
 }
