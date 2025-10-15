@@ -16,7 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceTest {
-    private static final Category CATEGORY = new Category("1", "Electrónica");
+    private static final Category CATEGORY = new Category("Electrónica", "desc");
 
     @Mock
     private CategoryRepository categoryRepository;
@@ -32,5 +32,25 @@ class CategoryServiceTest {
         var result = categoryService.getAll();
         assertEquals(categorias, result);
         verify(categoryRepository).findAll();
+    }
+
+    //test for getById method
+    
+    @Test
+    void getByIdDevuelveCategoriaSiExiste() {
+        when(categoryRepository.findById(1L)).thenReturn(java.util.Optional.of(CATEGORY));
+        Category result = categoryService.getById(1L);
+        assertEquals(CATEGORY, result);
+        verify(categoryRepository).findById(1L);
+    }
+
+    @Test
+    void getByIdLanzaExcepcionSiNoExiste() {
+        when(categoryRepository.findById(1L)).thenReturn(java.util.Optional.empty());
+        Exception ex = assertThrows(IllegalStateException.class, () ->
+            categoryService.getById(1L)
+        );
+        assertTrue(ex.getMessage().contains("Category not found"));
+        verify(categoryRepository).findById(1L);
     }
 }
