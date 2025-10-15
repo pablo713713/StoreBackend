@@ -152,4 +152,34 @@ class CartItemServiceTest {
         verify(cartItemRepo).save(item);
         assertEquals(item, result);
     }
+
+    //tests for updateQuantityByProduct method
+
+    @Test
+    void updateQuantityByProductCantidadInvalida() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            cartItemService.updateQuantityByProduct(CART_ID, PRODUCT_ID, 0)
+        );
+        assertTrue(ex.getMessage().contains("quantity must be > 0"));
+    }
+
+    @Test
+    void updateQuantityByProductItemNoExiste() {
+        when(cartItemRepo.findByCart_IdAndProduct_Id(CART_ID, PRODUCT_ID)).thenReturn(Optional.empty());
+        IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
+            cartItemService.updateQuantityByProduct(CART_ID, PRODUCT_ID, QTY)
+        );
+        assertTrue(ex.getMessage().contains("CartItem not found"));
+    }
+
+    @Test
+    void updateQuantityByProductActualizaCorrectamente() {
+        CartItem item = mock(CartItem.class);
+        when(cartItemRepo.findByCart_IdAndProduct_Id(CART_ID, PRODUCT_ID)).thenReturn(Optional.of(item));
+
+        cartItemService.updateQuantityByProduct(CART_ID, PRODUCT_ID, 7);
+
+        verify(item).setQuantity(7);
+        verify(cartItemRepo).save(item);
+    }
 }
