@@ -220,4 +220,30 @@ class AdminServiceTest {
             throw new IllegalArgumentException("Solo se permite Admin o Inventory");
         }
     }
+
+    // Tests for delete method
+
+    @Test
+    @DisplayName("delete: borra admin existente")
+    void deleteAdminExistente() {
+        Admin admin = new Admin("John", "Doe", "", CODE_123, null);
+        admin.setId(1L);
+        when(adminRepository.findById(1L)).thenReturn(Optional.of(admin));
+
+        adminService.delete(1L);
+
+        verify(adminRepository).delete(admin);
+    }
+
+    @Test
+    @DisplayName("delete: lanza excepción si admin no existe")
+    void deleteAdminNoExiste() {
+        when(adminRepository.findById(99L)).thenReturn(Optional.empty());
+
+        Exception ex = assertThrows(IllegalStateException.class, () -> adminService.delete(99L));
+        assertEquals("Admin not found with id: 99", ex.getMessage());
+        verify(adminRepository, never()).delete(any());
+    }
+
+    // Tests for create method
 }
