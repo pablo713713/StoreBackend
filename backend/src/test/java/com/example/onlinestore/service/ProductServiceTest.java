@@ -48,11 +48,38 @@ class ProductServiceTest {
     }
 
     //test for createProduct method
+    
     @Test
     void createProductGuardaYRetornaProducto() {
         when(productRepository.save(PRODUCT)).thenReturn(PRODUCT);
         Product result = productService.createProduct(PRODUCT);
         assertEquals(PRODUCT, result);
         verify(productRepository).save(PRODUCT);
+    }
+
+    //test for updateProduct method
+
+    @Test
+    void updateProductActualizaYRetornaProducto() {
+        Product detalles = new Product("ID1", "NuevoNombre", "NuevaDesc", new java.math.BigDecimal("150.00"), 20);
+        when(productRepository.findById(PRODUCT_ID)).thenReturn(java.util.Optional.of(PRODUCT));
+        when(productRepository.save(any(Product.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        Product result = productService.updateProduct(PRODUCT_ID, detalles);
+        assertEquals("NuevoNombre", result.getNameProduct());
+        assertEquals("NuevaDesc", result.getDescription());
+        assertEquals(new java.math.BigDecimal("150.00"), result.getPrice());
+        assertEquals(20, result.getStock());
+        verify(productRepository).save(result);
+    }
+
+    @Test
+    void updateProductLanzaExcepcionSiNoExiste() {
+        when(productRepository.findById(PRODUCT_ID)).thenReturn(java.util.Optional.empty());
+        Product detalles = new Product("ID1", "NuevoNombre", "NuevaDesc", new java.math.BigDecimal("150.00"), 20);
+        Exception ex = assertThrows(IllegalStateException.class, () ->
+            productService.updateProduct(PRODUCT_ID, detalles)
+        );
+        assertTrue(ex.getMessage().contains("Product not found with id"));
     }
 }
