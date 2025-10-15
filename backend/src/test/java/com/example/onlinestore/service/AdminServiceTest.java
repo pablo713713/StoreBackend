@@ -364,4 +364,26 @@ class AdminServiceTest {
         assertEquals(inv, result.getAdminInventory());
         verify(adminRepository).save(admin);
     }
+
+    // Tests for removeInventory method
+
+    @Test
+    @DisplayName("removeInventory: lanza excepción si admin no existe")
+    void removeInventoryAdminNoExiste() {
+        when(adminRepository.findById(99L)).thenReturn(Optional.empty());
+        Exception ex = assertThrows(IllegalStateException.class, () -> adminService.removeInventory(99L));
+        assertEquals("Admin not found with id: 99", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("removeInventory: éxito, elimina inventario del admin")
+    void removeInventoryExito() {
+        Admin admin = new Admin("John", "Doe", "", CODE_123, new Inventory(List.of()));
+        admin.setId(1L);
+        when(adminRepository.findById(1L)).thenReturn(Optional.of(admin));
+        when(adminRepository.save(any(Admin.class))).thenAnswer(invoc -> invoc.getArgument(0));
+        Admin result = adminService.removeInventory(1L);
+        assertNull(result.getAdminInventory());
+        verify(adminRepository).save(admin);
+    }
 }
