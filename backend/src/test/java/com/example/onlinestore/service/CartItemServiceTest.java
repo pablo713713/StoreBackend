@@ -15,6 +15,7 @@ import com.example.onlinestore.repository.CartItemRepository;
 
 import com.example.onlinestore.model.ShoppingCart;
 import com.example.onlinestore.model.Product;
+import com.example.onlinestore.model.Discount;
 import com.example.onlinestore.repository.ShoppingCartRepository;
 import com.example.onlinestore.repository.ProductRepository;
 import java.util.Optional;
@@ -30,6 +31,9 @@ class CartItemServiceTest {
 
     @Mock
     private ProductRepository productRepo;
+
+    @Mock
+    private DiscountService discountService;
 
     @InjectMocks
     private CartItemService cartItemService;
@@ -219,5 +223,50 @@ class CartItemServiceTest {
     void clearCartEliminaPorCartId() {
         cartItemService.clearCart(CART_ID);
         verify(cartItemRepo).deleteByCart_Id(CART_ID);
+    }
+
+    //tests for applyCode method
+
+    @Test
+    void applyCodeItemNoExiste() {
+        when(cartItemRepo.findByCart_IdAndProduct_Id(CART_ID, PRODUCT_ID)).thenReturn(Optional.empty());
+        IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
+            cartItemService.applyCode(CART_ID, PRODUCT_ID, "PROMO10")
+        );
+        assertTrue(ex.getMessage().contains("CartItem not found"));
+    }
+
+    @Test
+    void applyCodeCodigoInvalido() {
+        CartItem item = mock(CartItem.class);
+        Product product = mock(Product.class);
+        when(cartItemRepo.findByCart_IdAndProduct_Id(CART_ID, PRODUCT_ID)).thenReturn(Optional.of(item));
+        when(item.getProduct()).thenReturn(product);
+        when(discountService.validateForProduct("PROMO10", product)).thenReturn(Optional.empty());
+
+        IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
+            cartItemService.applyCode(CART_ID, PRODUCT_ID, "PROMO10")
+        );
+        assertTrue(ex.getMessage().contains("inválido"));
+    }
+
+    @Test
+    void applyCodeAplicaCorrectamente() {
+        CartItem item = mock(CartItem.class);
+        Product product = mock(Product.class);
+        Discount discount = mock(Discount.class);
+        when(cartItemRepo.findByCart_IdAndProduct_Id(CART_ID, PRODUCT_ID)).thenReturn(Optional.of(item));
+        when(item.getProduct()).thenReturn(product);
+        when(discountService.validateForProduct("PROMO10", product)).thenReturn(Optional.of(discount));
+        when(discount.getIdDiscount()).thenReturn("PROMO10");
+        when(discount.getPercentage()).thenReturn(new java.math.BigDecimal("0.15"));
+        when(cartItemRepo.save(item)).thenReturn(item);
+
+        CartItem result = cartItemService.applyCode(CART_ID, PRODUCT_ID, "PROMO10");
+
+        verify(item).setCouponCode("PROMO10");
+        verify(item).setCouponPct(new java.math.BigDecimal("0.15"));
+        verify(cartItemRepo).save(item);
+        assertEquals(item, result);
     }
 }
