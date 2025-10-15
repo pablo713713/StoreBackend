@@ -123,4 +123,22 @@ class InventoryServiceTest {
         verify(categoryRepository).findAllById(ids);
         verify(inventoryRepository).save(inv);
     }
+
+    //test for delete method
+
+    @Test
+    void deleteEliminaInventarioExistente() {
+        when(inventoryRepository.findById(1L)).thenReturn(Optional.of(INVENTORY));
+        inventoryService.delete(1L);
+        verify(inventoryRepository).findById(1L);
+        verify(inventoryRepository).delete(INVENTORY);
+    }
+
+    @Test
+    void deleteLanzaExcepcionSiNoExiste() {
+        when(inventoryRepository.findById(2L)).thenReturn(Optional.empty());
+        Exception ex = assertThrows(IllegalStateException.class, () -> inventoryService.delete(2L));
+        assertTrue(ex.getMessage().contains("Inventory not found"));
+        verify(inventoryRepository).findById(2L);
+    }
 }
