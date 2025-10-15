@@ -16,8 +16,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
+    // Constantes compartidas para evitar duplicación de literales
     private static final Long PRODUCT_ID = 1L;
     private static final Product PRODUCT = new Product("ID1", "Nombre", "Desc", new java.math.BigDecimal("100.00"), 10);
+    
     @Mock
     private ProductRepository productRepository;
     @Mock
@@ -144,5 +146,28 @@ class ProductServiceTest {
         Product result = productService.attachDiscount(PRODUCT_ID, DISCOUNT_CODE);
         assertEquals(DISCOUNT, result.getDiscount());
         verify(productRepository).save(PRODUCT);
+    }
+
+    //test for removeDiscount method
+
+    @Test
+    void removeDiscountEliminaDescuentoSiExiste() {
+        Product productoConDescuento = new Product("ID1", "Nombre", "Desc", new java.math.BigDecimal("100.00"), 10);
+        productoConDescuento.setDiscount(DISCOUNT);
+        when(productRepository.findById(PRODUCT_ID)).thenReturn(java.util.Optional.of(productoConDescuento));
+        when(productRepository.save(any(Product.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        Product result = productService.removeDiscount(PRODUCT_ID);
+        assertNull(result.getDiscount());
+        verify(productRepository).save(productoConDescuento);
+    }
+
+    @Test
+    void removeDiscountLanzaExcepcionSiNoExiste() {
+        when(productRepository.findById(PRODUCT_ID)).thenReturn(java.util.Optional.empty());
+        Exception ex = assertThrows(IllegalStateException.class, () ->
+            productService.removeDiscount(PRODUCT_ID)
+        );
+        assertTrue(ex.getMessage().contains("Product not found"));
     }
 }
