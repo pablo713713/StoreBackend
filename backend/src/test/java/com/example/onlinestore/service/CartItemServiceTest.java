@@ -212,4 +212,12 @@ class CartItemServiceTest {
 
         verify(cartItemRepo).deleteById(555L);
     }
+
+    //tests for clearCart method
+
+    @Test
+    void clearCartEliminaPorCartId() {
+        cartItemService.clearCart(CART_ID);
+        verify(cartItemRepo).deleteByCart_Id(CART_ID);
+    }
 }
