@@ -190,4 +190,26 @@ class CartItemServiceTest {
         cartItemService.removeItem(123L);
         verify(cartItemRepo).deleteById(123L);
     }
+
+    //tests for removeByProduct method
+
+    @Test
+    void removeByProductItemNoExiste() {
+        when(cartItemRepo.findByCart_IdAndProduct_Id(CART_ID, PRODUCT_ID)).thenReturn(Optional.empty());
+        IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
+            cartItemService.removeByProduct(CART_ID, PRODUCT_ID)
+        );
+        assertTrue(ex.getMessage().contains("CartItem not found"));
+    }
+
+    @Test
+    void removeByProductEliminaCorrectamente() {
+        CartItem item = mock(CartItem.class);
+        when(cartItemRepo.findByCart_IdAndProduct_Id(CART_ID, PRODUCT_ID)).thenReturn(Optional.of(item));
+        when(item.getId()).thenReturn(555L);
+
+        cartItemService.removeByProduct(CART_ID, PRODUCT_ID);
+
+        verify(cartItemRepo).deleteById(555L);
+    }
 }
