@@ -49,7 +49,7 @@ class ClientServiceTest {
     }
 
     //test for getAllClients method
-    
+
     @Test
     void getAllClientsRetornaLista() {
         java.util.List<Client> clientes = java.util.List.of(CLIENT);
@@ -57,5 +57,23 @@ class ClientServiceTest {
         var result = clientService.getAllClients();
         assertEquals(clientes, result);
         verify(clientRepository).findAll();
+    }
+
+    //test for saveClient method
+
+    @Test
+    void saveClientGuardaYRetornaCliente() {
+        when(clientRepository.save(CLIENT)).thenReturn(CLIENT);
+        Client result = clientService.saveClient(CLIENT);
+        assertEquals(CLIENT, result);
+        verify(clientRepository).save(CLIENT);
+    }
+
+    //test for deleteClient method
+    
+    @Test
+    void deleteClientEliminaClientePorId() {
+        clientService.deleteClient(1L);
+        verify(clientRepository).deleteById(1L);
     }
 }
