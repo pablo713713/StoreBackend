@@ -269,4 +269,29 @@ class CartItemServiceTest {
         verify(cartItemRepo).save(item);
         assertEquals(item, result);
     }
+
+    //tests for removeCode method
+
+    @Test
+    void removeCodeItemNoExiste() {
+        when(cartItemRepo.findByCart_IdAndProduct_Id(CART_ID, PRODUCT_ID)).thenReturn(Optional.empty());
+        IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
+            cartItemService.removeCode(CART_ID, PRODUCT_ID)
+        );
+        assertTrue(ex.getMessage().contains("CartItem not found"));
+    }
+
+    @Test
+    void removeCodeEliminaCorrectamente() {
+        CartItem item = mock(CartItem.class);
+        when(cartItemRepo.findByCart_IdAndProduct_Id(CART_ID, PRODUCT_ID)).thenReturn(Optional.of(item));
+        when(cartItemRepo.save(item)).thenReturn(item);
+
+        CartItem result = cartItemService.removeCode(CART_ID, PRODUCT_ID);
+
+        verify(item).setCouponCode(null);
+        verify(item).setCouponPct(null);
+        verify(cartItemRepo).save(item);
+        assertEquals(item, result);
+    }
 }
