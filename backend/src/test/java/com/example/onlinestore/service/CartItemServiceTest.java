@@ -182,4 +182,12 @@ class CartItemServiceTest {
         verify(item).setQuantity(7);
         verify(cartItemRepo).save(item);
     }
+
+    //tests for removeItem method
+
+    @Test
+    void removeItemEliminaPorId() {
+        cartItemService.removeItem(123L);
+        verify(cartItemRepo).deleteById(123L);
+    }
 }
