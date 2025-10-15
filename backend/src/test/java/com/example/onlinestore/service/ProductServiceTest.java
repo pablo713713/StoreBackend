@@ -48,7 +48,7 @@ class ProductServiceTest {
     }
 
     //test for createProduct method
-    
+
     @Test
     void createProductGuardaYRetornaProducto() {
         when(productRepository.save(PRODUCT)).thenReturn(PRODUCT);
@@ -81,5 +81,22 @@ class ProductServiceTest {
             productService.updateProduct(PRODUCT_ID, detalles)
         );
         assertTrue(ex.getMessage().contains("Product not found with id"));
+    }
+
+    //test for deleteProduct method
+    @Test
+    void deleteProductEliminaSiExiste() {
+        when(productRepository.existsById(PRODUCT_ID)).thenReturn(true);
+        productService.deleteProduct(PRODUCT_ID);
+        verify(productRepository).deleteById(PRODUCT_ID);
+    }
+
+    @Test
+    void deleteProductLanzaExcepcionSiNoExiste() {
+        when(productRepository.existsById(PRODUCT_ID)).thenReturn(false);
+        Exception ex = assertThrows(IllegalStateException.class, () ->
+            productService.deleteProduct(PRODUCT_ID)
+        );
+        assertTrue(ex.getMessage().contains("does not exist"));
     }
 }
