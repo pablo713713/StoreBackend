@@ -246,4 +246,69 @@ class AdminServiceTest {
     }
 
     // Tests for create method
+
+    @Test
+    @DisplayName("create: lanza excepción si accessCode duplicado")
+    void createAccessCodeDuplicado() {
+        Admin admin = new Admin("John", "Doe", "", CODE_123, null);
+        when(adminRepository.findByAccessCode(CODE_123)).thenReturn(Optional.of(admin));
+        Exception ex = assertThrows(IllegalStateException.class, () -> adminService.create(admin));
+        assertTrue(ex.getMessage().contains("Access code already exists"));
+        verify(adminRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("create: inventario nulo")
+    void createInventarioNulo() {
+        Admin admin = new Admin("John", "Doe", "", CODE_123, null);
+        when(adminRepository.findByAccessCode(CODE_123)).thenReturn(Optional.empty());
+        when(adminRepository.save(any(Admin.class))).thenAnswer(inv -> inv.getArgument(0));
+        Admin result = adminService.create(admin);
+        assertNull(result.getAdminInventory());
+        verify(adminRepository).save(admin);
+    }
+
+    @Test
+    @DisplayName("create: inventario no existe")
+    void createInventarioNoExiste() {
+        Inventory inv = new Inventory(List.of());
+        inv.setId(2L);
+        Admin admin = new Admin("John", "Doe", "", CODE_123, inv);
+        when(adminRepository.findByAccessCode(CODE_123)).thenReturn(Optional.empty());
+        when(inventoryRepository.findById(2L)).thenReturn(Optional.empty());
+        Exception ex = assertThrows(IllegalStateException.class, () -> adminService.create(admin));
+        assertTrue(ex.getMessage().contains("Inventory not found"));
+        verify(adminRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("create: inventario ya asignado a otro admin")
+    void createInventarioYaAsignado() {
+        Inventory inv = new Inventory(List.of());
+        inv.setId(2L);
+        Admin admin = new Admin("John", "Doe", "", CODE_123, inv);
+        Admin otroAdmin = new Admin("Other", "O", "", CODE_999, inv);
+        otroAdmin.setId(99L);
+        when(adminRepository.findByAccessCode(CODE_123)).thenReturn(Optional.empty());
+        when(inventoryRepository.findById(2L)).thenReturn(Optional.of(inv));
+        when(adminRepository.findByAdminInventory_Id(2L)).thenReturn(Optional.of(otroAdmin));
+        Exception ex = assertThrows(IllegalStateException.class, () -> adminService.create(admin));
+        assertTrue(ex.getMessage().contains("Inventory already assigned to admin id"));
+        verify(adminRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("create: éxito con inventario válido y libre")
+    void createExitoInventarioValidoLibre() {
+        Inventory inv = new Inventory(List.of());
+        inv.setId(2L);
+        Admin admin = new Admin("John", "Doe", "", CODE_123, inv);
+        when(adminRepository.findByAccessCode(CODE_123)).thenReturn(Optional.empty());
+        when(inventoryRepository.findById(2L)).thenReturn(Optional.of(inv));
+        when(adminRepository.findByAdminInventory_Id(2L)).thenReturn(Optional.empty());
+        when(adminRepository.save(any(Admin.class))).thenAnswer(invoc -> invoc.getArgument(0));
+        Admin result = adminService.create(admin);
+        assertEquals(inv, result.getAdminInventory());
+        verify(adminRepository).save(admin);
+    }
 }
