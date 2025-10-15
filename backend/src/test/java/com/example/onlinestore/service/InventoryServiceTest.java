@@ -195,4 +195,28 @@ class InventoryServiceTest {
         verify(inventoryRepository).findById(1L);
         verify(categoryRepository).findById(99L);
     }
+
+    //test for removeCategory method
+
+    @Test
+    void removeCategoryRemueveCategoriaExistente() {
+        Category cat = mock(Category.class);
+        when(cat.getId()).thenReturn(10L);
+        java.util.List<Category> categorias = new java.util.ArrayList<>(java.util.List.of(cat));
+        Inventory inv = new Inventory(categorias);
+        when(inventoryRepository.findById(1L)).thenReturn(Optional.of(inv));
+        when(inventoryRepository.save(inv)).thenReturn(inv);
+        Inventory result = inventoryService.removeCategory(1L, 10L);
+        assertTrue(result.getListCategories().stream().noneMatch(c -> c.getId().equals(10L)));
+        verify(inventoryRepository).findById(1L);
+        verify(inventoryRepository).save(inv);
+    }
+
+    @Test
+    void removeCategoryLanzaExcepcionSiInventarioNoExiste() {
+        when(inventoryRepository.findById(2L)).thenReturn(Optional.empty());
+        Exception ex = assertThrows(IllegalStateException.class, () -> inventoryService.removeCategory(2L, 10L));
+        assertTrue(ex.getMessage().contains("Inventory not found"));
+        verify(inventoryRepository).findById(2L);
+    }
 }
