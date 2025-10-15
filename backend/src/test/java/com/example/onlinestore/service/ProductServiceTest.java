@@ -84,6 +84,7 @@ class ProductServiceTest {
     }
 
     //test for deleteProduct method
+    
     @Test
     void deleteProductEliminaSiExiste() {
         when(productRepository.existsById(PRODUCT_ID)).thenReturn(true);
@@ -98,5 +99,16 @@ class ProductServiceTest {
             productService.deleteProduct(PRODUCT_ID)
         );
         assertTrue(ex.getMessage().contains("does not exist"));
+    }
+
+    //test for getAllProducts method
+
+    @Test
+    void getAllProductsRetornaLista() {
+        java.util.List<Product> productos = java.util.List.of(PRODUCT);
+        when(productRepository.findAll()).thenReturn(productos);
+        var result = productService.getAllProducts();
+        assertEquals(productos, result);
+        verify(productRepository).findAll();
     }
 }
