@@ -8,6 +8,7 @@ import com.example.onlinestore.model.Discount;
 import com.example.onlinestore.repository.ProductRepository;
 import com.example.onlinestore.repository.DiscountRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -31,7 +32,7 @@ class ProductServiceTest {
 
     //test for getProductById method
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getProductByIdDevuelveProductoSiExiste() {
         when(productRepository.findById(PRODUCT_ID)).thenReturn(java.util.Optional.of(PRODUCT));
         var result = productService.getProductById(PRODUCT_ID);
@@ -39,10 +40,19 @@ class ProductServiceTest {
         assertEquals(PRODUCT, result.get());
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void getProductByIdVacioSiNoExiste() {
         when(productRepository.findById(PRODUCT_ID)).thenReturn(java.util.Optional.empty());
         var result = productService.getProductById(PRODUCT_ID);
         assertTrue(result.isEmpty());
+    }
+
+    //test for createProduct method
+    @Test
+    void createProductGuardaYRetornaProducto() {
+        when(productRepository.save(PRODUCT)).thenReturn(PRODUCT);
+        Product result = productService.createProduct(PRODUCT);
+        assertEquals(PRODUCT, result);
+        verify(productRepository).save(PRODUCT);
     }
 }
