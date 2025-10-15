@@ -22,6 +22,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class DiscountServiceImplTest {
 
+    private static final java.math.BigDecimal PRECIO = new java.math.BigDecimal("200.00");
+    private static final java.math.BigDecimal PCT = new java.math.BigDecimal("15.00");
+    private static final java.math.BigDecimal RESULTADO_ESPERADO = new java.math.BigDecimal("170.00");
+
     @InjectMocks
     private DiscountServiceImpl discountService;
 
@@ -116,5 +120,18 @@ class DiscountServiceImplTest {
         Optional<Discount> result = discountService.validateForProduct("PROMO10", product);
         assertTrue(result.isPresent());
         assertEquals(discount, result.get());
+    }
+
+    //tests for applyPct method
+    @Test
+    void applyPctCalculaCorrectamente() {
+        java.math.BigDecimal result = discountService.applyPct(PRECIO, PCT);
+        assertEquals(RESULTADO_ESPERADO, result);
+    }
+
+    @Test
+    void applyPctConNulosRetornaPrecio() {
+        assertEquals(PRECIO, discountService.applyPct(PRECIO, null));
+        assertNull(discountService.applyPct(null, PCT));
     }
 }
