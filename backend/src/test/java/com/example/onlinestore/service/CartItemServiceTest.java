@@ -294,4 +294,32 @@ class CartItemServiceTest {
         verify(cartItemRepo).save(item);
         assertEquals(item, result);
     }
+
+    //test for efectiveUnitPrice method
+
+    @Test
+    void efectiveUnitPriceSinDescuento() {
+        CartItem item = mock(CartItem.class);
+        Product product = mock(Product.class);
+        when(item.getProduct()).thenReturn(product);
+        when(product.getPrice()).thenReturn(new java.math.BigDecimal("100.00"));
+        when(item.getCouponPct()).thenReturn(null);
+
+        java.math.BigDecimal result = cartItemService.effectiveUnitPrice(item);
+        assertEquals(new java.math.BigDecimal("100.00"), result);
+    }
+
+    @Test
+    void efectiveUnitPriceConDescuento() {
+        CartItem item = mock(CartItem.class);
+        Product product = mock(Product.class);
+        when(item.getProduct()).thenReturn(product);
+        when(product.getPrice()).thenReturn(new java.math.BigDecimal("200.00"));
+        when(item.getCouponPct()).thenReturn(new java.math.BigDecimal("0.20"));
+        when(discountService.applyPct(new java.math.BigDecimal("200.00"), new java.math.BigDecimal("0.20")))
+            .thenReturn(new java.math.BigDecimal("160.00"));
+
+        java.math.BigDecimal result = cartItemService.effectiveUnitPrice(item);
+        assertEquals(new java.math.BigDecimal("160.00"), result);
+    }
 }
