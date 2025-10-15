@@ -120,4 +120,36 @@ class CartItemServiceTest {
         assertEquals(product, saved.getProduct());
         assertEquals(QTY, saved.getQuantity());
     }
+
+    //Tests for updateQuantity method
+
+    @Test
+    void updateQuantityCantidadInvalida() {
+        IllegalArgumentException ex = assertThrows(IllegalArgumentException.class, () ->
+            cartItemService.updateQuantity(99L, 0)
+        );
+        assertTrue(ex.getMessage().contains("quantity must be > 0"));
+    }
+
+    @Test
+    void updateQuantityItemNoExiste() {
+        when(cartItemRepo.findById(99L)).thenReturn(Optional.empty());
+        IllegalStateException ex = assertThrows(IllegalStateException.class, () ->
+            cartItemService.updateQuantity(99L, 2)
+        );
+        assertTrue(ex.getMessage().contains("CartItem not found"));
+    }
+
+    @Test
+    void updateQuantityActualizaCorrectamente() {
+        CartItem item = mock(CartItem.class);
+        when(cartItemRepo.findById(99L)).thenReturn(Optional.of(item));
+        when(cartItemRepo.save(item)).thenReturn(item);
+
+        CartItem result = cartItemService.updateQuantity(99L, 5);
+
+        verify(item).setQuantity(5);
+        verify(cartItemRepo).save(item);
+        assertEquals(item, result);
+    }
 }
