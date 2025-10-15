@@ -5,7 +5,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.example.onlinestore.model.Category;
 import org.junit.jupiter.api.Test;
-
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.any;
 import com.example.onlinestore.model.Category;
 import com.example.onlinestore.repository.CategoryRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,5 +53,23 @@ class CategoryServiceTest {
         );
         assertTrue(ex.getMessage().contains("Category not found"));
         verify(categoryRepository).findById(1L);
+    }
+
+    //test for create method
+
+    @Test
+    void createGuardaYCategoriaRetornada() {
+        when(categoryRepository.save(CATEGORY)).thenReturn(CATEGORY);
+        Category result = categoryService.create(CATEGORY);
+        assertEquals(CATEGORY, result);
+        verify(categoryRepository).save(CATEGORY);
+    }
+    
+    @Test
+    void createLanzaExcepcionSiCategoriaNull() {
+        assertThrows(NullPointerException.class, () ->
+            categoryService.create(null)
+        );
+        verify(categoryRepository, never()).save(any());
     }
 }
