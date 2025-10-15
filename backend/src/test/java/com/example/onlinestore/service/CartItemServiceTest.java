@@ -42,10 +42,6 @@ class CartItemServiceTest {
     private static final Long PRODUCT_ID = 10L;
     private static final int QTY = 3;
 
-    @BeforeEach
-    void setUp() {
-    }
-
 //tests for getCart method
 
     @Test
