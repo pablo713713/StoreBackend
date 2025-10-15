@@ -15,6 +15,10 @@ import org.junit.jupiter.api.Test;
 
 @ExtendWith(MockitoExtension.class)
 class ClientServiceTest {
+    
+    private static final Client CLIENT = new Client(
+        "Juan", "Pérez", "García", "C001", "juan@email.com", "pass123");
+
     @Mock
     private ClientRepository clientRepository;
     @InjectMocks
@@ -26,9 +30,6 @@ class ClientServiceTest {
     }
 
     //test for getClientById method
-
-    private static final Client CLIENT = new Client(
-        "Juan", "Pérez", "García", "C001", "juan@email.com", "pass123");
 
     @Test
     void getClientByIdDevuelveClienteSiExiste() {
@@ -45,5 +46,16 @@ class ClientServiceTest {
             clientService.getClientById(2L)
         );
         verify(clientRepository).findById(2L);
+    }
+
+    //test for getAllClients method
+    
+    @Test
+    void getAllClientsRetornaLista() {
+        java.util.List<Client> clientes = java.util.List.of(CLIENT);
+        when(clientRepository.findAll()).thenReturn(clientes);
+        var result = clientService.getAllClients();
+        assertEquals(clientes, result);
+        verify(clientRepository).findAll();
     }
 }
