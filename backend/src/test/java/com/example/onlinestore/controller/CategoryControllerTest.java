@@ -120,5 +120,64 @@ public class CategoryControllerTest {
         verify(categoryService).update(1L, updated);
     }
 
+    @Test
+    void testUpdateCategoryNullMessage() {
+        Category updated = new Category("Garden", "Tools");
+        when(categoryService.update(1L, updated))
+                .thenThrow(new IllegalStateException((String) null)); // fuerza msg == null
 
+        ResponseEntity<Object> response = categoryController.update(1L, updated);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+        verify(categoryService).update(1L, updated);
+    }
+    @Test
+    void testDeleteCategorySuccess() {
+        doNothing().when(categoryService).delete(1L);
+
+        ResponseEntity<Object> response = categoryController.delete(1L);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+        assertNull(response.getBody());
+        verify(categoryService).delete(1L);
+    }
+
+    @Test
+    void testDeleteCategoryConflictAssignedProducts() {
+        doThrow(new IllegalStateException("Cannot delete category with assigned products"))
+                .when(categoryService).delete(1L);
+
+        ResponseEntity<Object> response = categoryController.delete(1L);
+
+        assertEquals(HttpStatus.CONFLICT, response.getStatusCode());
+        assertEquals("Cannot delete category with assigned products", response.getBody());
+        verify(categoryService).delete(1L);
+    }
+
+    @Test
+    void testDeleteCategoryNotFound() {
+        doThrow(new IllegalStateException("Category not found"))
+                .when(categoryService).delete(1L);
+
+        ResponseEntity<Object> response = categoryController.delete(1L);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+        verify(categoryService).delete(1L);
+    }
+
+    @Test
+    void testDeleteCategoryNullMessage() {
+        doThrow(new IllegalStateException((String) null))
+                .when(categoryService).delete(1L);
+
+        ResponseEntity<Object> response = categoryController.delete(1L);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+        verify(categoryService).delete(1L);
+    }
 }
+
+
