@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class CategoryServiceTest {
     private static final Category CATEGORY = new Category("Electrónica", "desc");
+    private static final Category CATEGORY_UPDATED = new Category("Electrodomésticos", "nueva desc");
 
     @Mock
     private CategoryRepository categoryRepository;
@@ -71,5 +72,55 @@ class CategoryServiceTest {
             categoryService.create(null)
         );
         verify(categoryRepository, never()).save(any());
+    }
+
+    //test for update method
+    
+    @Test
+    void updateActualizaYCategoriaRetornada() {
+        Category catOriginal = new Category("Electrónica", "desc");
+        when(categoryRepository.findById(1L)).thenReturn(java.util.Optional.of(catOriginal));
+        when(categoryRepository.save(any(Category.class))).thenAnswer(inv -> inv.getArgument(0));
+        Category result = categoryService.update(1L, CATEGORY_UPDATED);
+        assertEquals(CATEGORY_UPDATED.getNameCategory(), result.getNameCategory());
+        assertEquals(CATEGORY_UPDATED.getDescription(), result.getDescription());
+        verify(categoryRepository).findById(1L);
+        verify(categoryRepository).save(catOriginal);
+    }
+
+    @Test
+    void updateLanzaExcepcionSiNoExisteId() {
+        when(categoryRepository.findById(2L)).thenReturn(java.util.Optional.empty());
+        assertThrows(IllegalStateException.class, () ->
+            categoryService.update(2L, CATEGORY_UPDATED)
+        );
+        verify(categoryRepository).findById(2L);
+        verify(categoryRepository, never()).save(any());
+    }
+
+    @Test
+    void updateLanzaExcepcionSiNuevoNombreYaExiste() {
+        Category catOriginal = new Category("Electrónica", "desc");
+        when(categoryRepository.findById(1L)).thenReturn(java.util.Optional.of(catOriginal));
+        when(categoryRepository.findByNameCategory(CATEGORY_UPDATED.getNameCategory())).thenReturn(java.util.Optional.of(new Category("Electrodomésticos", "otra desc")));
+        assertThrows(IllegalStateException.class, () ->
+            categoryService.update(1L, CATEGORY_UPDATED)
+        );
+        verify(categoryRepository).findById(1L);
+        verify(categoryRepository).findByNameCategory(CATEGORY_UPDATED.getNameCategory());
+        verify(categoryRepository, never()).save(any());
+    }
+
+    @Test
+    void updateNoBuscaNombreSiNoCambiaNombre() {
+        Category catOriginal = new Category("Electrónica", "desc");
+        Category detalles = new Category("Electrónica", "nueva desc");
+        when(categoryRepository.findById(1L)).thenReturn(java.util.Optional.of(catOriginal));
+        when(categoryRepository.save(any(Category.class))).thenAnswer(inv -> inv.getArgument(0));
+        Category result = categoryService.update(1L, detalles);
+        assertEquals(detalles.getDescription(), result.getDescription());
+        verify(categoryRepository).findById(1L);
+        verify(categoryRepository, never()).findByNameCategory(any());
+        verify(categoryRepository).save(catOriginal);
     }
 }
