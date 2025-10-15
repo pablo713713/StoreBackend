@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.ArgumentMatchers.any;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -140,5 +142,57 @@ class InventoryServiceTest {
         Exception ex = assertThrows(IllegalStateException.class, () -> inventoryService.delete(2L));
         assertTrue(ex.getMessage().contains("Inventory not found"));
         verify(inventoryRepository).findById(2L);
+    }
+
+    //test for addCategory method
+
+    @Test
+    void addCategoryAgregaCategoriaNueva() {
+        Inventory inv = new Inventory(new java.util.ArrayList<>());
+    Category cat = mock(Category.class);
+    when(cat.getId()).thenReturn(10L);
+        when(inventoryRepository.findById(1L)).thenReturn(Optional.of(inv));
+        when(categoryRepository.findById(10L)).thenReturn(Optional.of(cat));
+        when(inventoryRepository.save(inv)).thenReturn(inv);
+        Inventory result = inventoryService.addCategory(1L, 10L);
+        assertTrue(result.getListCategories().stream().anyMatch(c -> c.getId().equals(10L)));
+        verify(inventoryRepository).findById(1L);
+        verify(categoryRepository).findById(10L);
+        verify(inventoryRepository).save(inv);
+    }
+
+    @Test
+    void addCategoryNoDuplicaCategoriaExistente() {
+    Category cat = mock(Category.class);
+    when(cat.getId()).thenReturn(10L);
+        Inventory inv = new Inventory(new java.util.ArrayList<>(java.util.List.of(cat)));
+        when(inventoryRepository.findById(1L)).thenReturn(Optional.of(inv));
+        when(categoryRepository.findById(10L)).thenReturn(Optional.of(cat));
+        when(inventoryRepository.save(inv)).thenReturn(inv);
+        Inventory result = inventoryService.addCategory(1L, 10L);
+        long count = result.getListCategories().stream().filter(c -> c.getId().equals(10L)).count();
+        assertEquals(1, count);
+        verify(inventoryRepository).findById(1L);
+        verify(categoryRepository).findById(10L);
+        verify(inventoryRepository).save(inv);
+    }
+
+    @Test
+    void addCategoryLanzaExcepcionSiInventarioNoExiste() {
+        when(inventoryRepository.findById(2L)).thenReturn(Optional.empty());
+        Exception ex = assertThrows(IllegalStateException.class, () -> inventoryService.addCategory(2L, 10L));
+        assertTrue(ex.getMessage().contains("Inventory not found"));
+        verify(inventoryRepository).findById(2L);
+    }
+
+    @Test
+    void addCategoryLanzaExcepcionSiCategoriaNoExiste() {
+        Inventory inv = new Inventory(new java.util.ArrayList<>());
+        when(inventoryRepository.findById(1L)).thenReturn(Optional.of(inv));
+        when(categoryRepository.findById(99L)).thenReturn(Optional.empty());
+        Exception ex = assertThrows(IllegalStateException.class, () -> inventoryService.addCategory(1L, 99L));
+        assertTrue(ex.getMessage().contains("Category not found"));
+        verify(inventoryRepository).findById(1L);
+        verify(categoryRepository).findById(99L);
     }
 }
