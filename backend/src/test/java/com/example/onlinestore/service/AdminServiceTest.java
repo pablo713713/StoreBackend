@@ -311,4 +311,57 @@ class AdminServiceTest {
         assertEquals(inv, result.getAdminInventory());
         verify(adminRepository).save(admin);
     }
+
+    // Tests for setInventory method
+
+    @Test
+    @DisplayName("setInventory: lanza excepción si admin no existe")
+    void setInventoryAdminNoExiste() {
+        when(adminRepository.findById(99L)).thenReturn(Optional.empty());
+        Exception ex = assertThrows(IllegalStateException.class, () -> adminService.setInventory(99L, 2L));
+        assertEquals("Admin not found with id: 99", ex.getMessage());
+    }
+
+    @Test
+    @DisplayName("setInventory: lanza excepción si inventario no existe")
+    void setInventoryInventarioNoExiste() {
+        Admin admin = new Admin("John", "Doe", "", CODE_123, null);
+        admin.setId(1L);
+        when(adminRepository.findById(1L)).thenReturn(Optional.of(admin));
+        when(inventoryRepository.findById(2L)).thenReturn(Optional.empty());
+        Exception ex = assertThrows(IllegalStateException.class, () -> adminService.setInventory(1L, 2L));
+        assertTrue(ex.getMessage().contains("Inventory not found"));
+    }
+
+    @Test
+    @DisplayName("setInventory: lanza excepción si inventario ya asignado a otro admin")
+    void setInventoryYaAsignadoOtroAdmin() {
+        Admin admin = new Admin("John", "Doe", "", CODE_123, null);
+        admin.setId(1L);
+        Inventory inv = new Inventory(List.of());
+        inv.setId(2L);
+        Admin otroAdmin = new Admin("Other", "O", "", CODE_999, inv);
+        otroAdmin.setId(99L);
+        when(adminRepository.findById(1L)).thenReturn(Optional.of(admin));
+        when(inventoryRepository.findById(2L)).thenReturn(Optional.of(inv));
+        when(adminRepository.findByAdminInventory_Id(2L)).thenReturn(Optional.of(otroAdmin));
+        Exception ex = assertThrows(IllegalStateException.class, () -> adminService.setInventory(1L, 2L));
+        assertTrue(ex.getMessage().contains("Inventory already assigned to admin id"));
+    }
+
+    @Test
+    @DisplayName("setInventory: éxito cuando inventario está libre o asignado al mismo admin")
+    void setInventoryExito() {
+        Admin admin = new Admin("John", "Doe", "", CODE_123, null);
+        admin.setId(1L);
+        Inventory inv = new Inventory(List.of());
+        inv.setId(2L);
+        when(adminRepository.findById(1L)).thenReturn(Optional.of(admin));
+        when(inventoryRepository.findById(2L)).thenReturn(Optional.of(inv));
+        when(adminRepository.findByAdminInventory_Id(2L)).thenReturn(Optional.empty());
+        when(adminRepository.save(any(Admin.class))).thenAnswer(invoc -> invoc.getArgument(0));
+        Admin result = adminService.setInventory(1L, 2L);
+        assertEquals(inv, result.getAdminInventory());
+        verify(adminRepository).save(admin);
+    }
 }
