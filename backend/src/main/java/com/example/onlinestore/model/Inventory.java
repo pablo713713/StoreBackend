@@ -60,4 +60,8 @@ public class Inventory {
         listCategories.remove(category);
         this.lastUpdate = new Date();
     }
+    // Solo para uso en tests
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

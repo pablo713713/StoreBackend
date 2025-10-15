@@ -62,4 +62,8 @@ public class User {
     public String toString() {
         return name + " " + firstLastName + " " + secondLastName;
     }
+    // Solo para uso en tests
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

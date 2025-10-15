@@ -40,4 +40,8 @@ public class Admin extends User {
     public void setAdminInventory(Inventory adminInventory) {
         this.adminInventory = adminInventory;
     }
+    // Solo para uso en tests
+    public void setId(Long id) {
+        super.setId(id);
+    }
 }
