@@ -84,7 +84,7 @@ class ProductServiceTest {
     }
 
     //test for deleteProduct method
-    
+
     @Test
     void deleteProductEliminaSiExiste() {
         when(productRepository.existsById(PRODUCT_ID)).thenReturn(true);
@@ -110,5 +110,39 @@ class ProductServiceTest {
         var result = productService.getAllProducts();
         assertEquals(productos, result);
         verify(productRepository).findAll();
+    }
+
+    //test for attachDiscount method
+    private static final String DISCOUNT_CODE = "PROMO10";
+    private static final Discount DISCOUNT = new Discount(DISCOUNT_CODE, "Promo 10%", new java.math.BigDecimal("0.10"), new java.util.Date(), new java.util.Date());
+
+    @Test
+    void attachDiscountLanzaExcepcionSiProductoNoExiste() {
+        when(productRepository.findById(PRODUCT_ID)).thenReturn(java.util.Optional.empty());
+        Exception ex = assertThrows(IllegalStateException.class, () ->
+            productService.attachDiscount(PRODUCT_ID, DISCOUNT_CODE)
+        );
+        assertTrue(ex.getMessage().contains("Product not found"));
+    }
+
+    @Test
+    void attachDiscountLanzaExcepcionSiDiscountNoExiste() {
+        when(productRepository.findById(PRODUCT_ID)).thenReturn(java.util.Optional.of(PRODUCT));
+        when(discountRepository.findByIdDiscount(DISCOUNT_CODE)).thenReturn(java.util.Optional.empty());
+        Exception ex = assertThrows(IllegalStateException.class, () ->
+            productService.attachDiscount(PRODUCT_ID, DISCOUNT_CODE)
+        );
+        assertTrue(ex.getMessage().contains("Discount not found"));
+    }
+
+    @Test
+    void attachDiscountAsignaYGuarda() {
+        when(productRepository.findById(PRODUCT_ID)).thenReturn(java.util.Optional.of(PRODUCT));
+        when(discountRepository.findByIdDiscount(DISCOUNT_CODE)).thenReturn(java.util.Optional.of(DISCOUNT));
+        when(productRepository.save(any(Product.class))).thenAnswer(inv -> inv.getArgument(0));
+
+        Product result = productService.attachDiscount(PRODUCT_ID, DISCOUNT_CODE);
+        assertEquals(DISCOUNT, result.getDiscount());
+        verify(productRepository).save(PRODUCT);
     }
 }
