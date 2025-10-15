@@ -1,5 +1,8 @@
 package com.example.onlinestore.service;
 
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 import com.example.onlinestore.model.Product;
 import com.example.onlinestore.model.Discount;
 import com.example.onlinestore.repository.ProductRepository;
@@ -12,6 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
+    private static final Long PRODUCT_ID = 1L;
+    private static final Product PRODUCT = new Product("ID1", "Nombre", "Desc", new java.math.BigDecimal("100.00"), 10);
     @Mock
     private ProductRepository productRepository;
     @Mock
@@ -22,5 +27,22 @@ class ProductServiceTest {
     @BeforeEach
     void setUp() {
         // Preparación inicial para los tests de ProductService
+    }
+
+    //test for getProductById method
+
+    @org.junit.jupiter.api.Test
+    void getProductByIdDevuelveProductoSiExiste() {
+        when(productRepository.findById(PRODUCT_ID)).thenReturn(java.util.Optional.of(PRODUCT));
+        var result = productService.getProductById(PRODUCT_ID);
+        assertTrue(result.isPresent());
+        assertEquals(PRODUCT, result.get());
+    }
+
+    @org.junit.jupiter.api.Test
+    void getProductByIdVacioSiNoExiste() {
+        when(productRepository.findById(PRODUCT_ID)).thenReturn(java.util.Optional.empty());
+        var result = productService.getProductById(PRODUCT_ID);
+        assertTrue(result.isEmpty());
     }
 }
