@@ -76,4 +76,32 @@ class ClientServiceTest {
         clientService.deleteClient(1L);
         verify(clientRepository).deleteById(1L);
     }
+
+    //test for login method
+
+    @Test
+    void loginRetornaClienteSiCredencialesCorrectas() {
+        when(clientRepository.findByEmail(CLIENT.getEmail())).thenReturn(java.util.Optional.of(CLIENT));
+        Client result = clientService.login(CLIENT.getEmail(), CLIENT.getPassword());
+        assertEquals(CLIENT, result);
+        verify(clientRepository).findByEmail(CLIENT.getEmail());
+    }
+
+    @Test
+    void loginLanzaExcepcionSiEmailNoExiste() {
+        when(clientRepository.findByEmail("noexiste@email.com")).thenReturn(java.util.Optional.empty());
+        assertThrows(org.springframework.web.server.ResponseStatusException.class, () ->
+            clientService.login("noexiste@email.com", "pass123")
+        );
+        verify(clientRepository).findByEmail("noexiste@email.com");
+    }
+
+    @Test
+    void loginLanzaExcepcionSiPasswordIncorrecta() {
+        when(clientRepository.findByEmail(CLIENT.getEmail())).thenReturn(java.util.Optional.of(CLIENT));
+        assertThrows(org.springframework.web.server.ResponseStatusException.class, () ->
+            clientService.login(CLIENT.getEmail(), "wrongpass")
+        );
+        verify(clientRepository).findByEmail(CLIENT.getEmail());
+    }
 }
