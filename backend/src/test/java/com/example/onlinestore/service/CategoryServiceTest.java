@@ -123,4 +123,40 @@ class CategoryServiceTest {
         verify(categoryRepository, never()).findByNameCategory(any());
         verify(categoryRepository).save(catOriginal);
     }
+
+    //test for delete method
+
+    @Test
+    void deleteEliminaCategoriaSiNoTieneProductos() {
+        Category cat = new Category("Electrónica", "desc");
+        cat.setListProducts(null);
+        when(categoryRepository.findById(1L)).thenReturn(java.util.Optional.of(cat));
+        categoryService.delete(1L);
+        verify(categoryRepository).findById(1L);
+        verify(categoryRepository).delete(cat);
+    }
+
+    @Test
+    void deleteLanzaExcepcionSiTieneProductos() {
+        Category cat = new Category("Electrónica", "desc");
+        com.example.onlinestore.model.Product producto = mock(com.example.onlinestore.model.Product.class);
+        java.util.List<com.example.onlinestore.model.Product> productos = java.util.List.of(producto);
+        cat.setListProducts(productos);
+        when(categoryRepository.findById(1L)).thenReturn(java.util.Optional.of(cat));
+        assertThrows(IllegalStateException.class, () ->
+            categoryService.delete(1L)
+        );
+        verify(categoryRepository).findById(1L);
+        verify(categoryRepository, never()).delete(any());
+    }
+
+    @Test
+    void deleteLanzaExcepcionSiNoExisteId() {
+        when(categoryRepository.findById(2L)).thenReturn(java.util.Optional.empty());
+        assertThrows(IllegalStateException.class, () ->
+            categoryService.delete(2L)
+        );
+        verify(categoryRepository).findById(2L);
+        verify(categoryRepository, never()).delete(any());
+    }
 }
